@@ -17,30 +17,27 @@ npm run build
 php artisan serve
 ```
 
-## Laravel Cloud
+## Laravel Cloud Tanpa Database Cluster
 
-Agar deploy pertama tidak error, pastikan environment Laravel Cloud kamu punya:
+Project ini bisa dijalankan di Laravel Cloud tanpa bayar MySQL cluster dengan memakai SQLite yang disimpan di repo pada `database/database.sqlite`.
+
+Set environment Laravel Cloud seperti ini:
 
 - `APP_KEY`
 - `APP_ENV=production`
 - `APP_DEBUG=false`
 - `APP_URL=https://your-domain.laravel.cloud`
-- `DB_CONNECTION=mysql`
-- `DB_HOST`
-- `DB_PORT`
-- `DB_DATABASE`
-- `DB_USERNAME`
-- `DB_PASSWORD`
-- `SESSION_DRIVER=database`
-- `CACHE_STORE=database`
-- `QUEUE_CONNECTION=database`
+- `DB_CONNECTION=sqlite`
+- `SESSION_DRIVER=file`
+- `CACHE_STORE=file`
+- `QUEUE_CONNECTION=sync`
 - `DISCORD_INVITE_URL`
 - `DISCORD_BOT_TOKEN`
 - `DISCORD_GALLERY_CHANNEL_ID`
 - `DISCORD_GALLERY_LIMIT`
 - `DISCORD_CACHE_TTL_SECONDS`
 
-Deploy Commands Laravel Cloud yang disarankan:
+Deploy Commands Laravel Cloud:
 
 ```bash
 php artisan migrate --force
@@ -48,6 +45,6 @@ php artisan migrate --force
 
 Catatan:
 
-- Repo ini sekarang sudah punya migration `sessions`, jadi session database tidak lagi bikin `500` saat deploy baru.
-- Home dan gallery sudah dibuat fallback-safe, jadi kalau sync Discord gagal atau tabel gallery belum siap, halaman publik tetap bisa render.
-- Kalau halaman seperti dashboard, shop, events, atau leaderboard masih error setelah deploy, cek dulu apakah migrasi database benar-benar sudah jalan.
+- SQLite file bawaan repo bisa dipakai untuk data awal tanpa cluster database.
+- Repo ini tetap punya migration `sessions`, jadi kalau nanti pindah ke MySQL/driver database lagi, session tidak bikin `500`.
+- Home dan gallery sudah dibuat fallback-safe, jadi kalau sync Discord gagal, halaman publik tetap bisa render.

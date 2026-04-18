@@ -26,3 +26,5 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+import-laravel-cloud-db.ps1
+lyvacommunity-xampp*.sql
