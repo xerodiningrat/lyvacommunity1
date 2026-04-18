@@ -35,7 +35,25 @@ return [
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DB_URL'),
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'database' => (function (): string {
+                $database = env('DB_DATABASE');
+
+                if (! is_string($database) || trim($database) === '') {
+                    return database_path('database.sqlite');
+                }
+
+                $database = trim($database);
+
+                if (
+                    str_contains($database, DIRECTORY_SEPARATOR)
+                    || str_contains($database, '/')
+                    || str_ends_with(strtolower($database), '.sqlite')
+                ) {
+                    return $database;
+                }
+
+                return database_path('database.sqlite');
+            })(),
             'prefix' => '',
             'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
             'busy_timeout' => null,
