@@ -120,6 +120,8 @@ input,textarea{font-family:inherit;}
 .ch-acts{display:flex;gap:6px;align-items:center;flex-shrink:0;}
 .ch-btn{width:38px;height:38px;border-radius:9px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--text2);transition:all .22s;}
 .ch-btn:hover{background:var(--card2);border-color:var(--border2);color:var(--white);}
+.ch-btn.active{background:rgba(26,110,245,.16);border-color:var(--accent2);color:var(--accent3);box-shadow:0 0 0 1px rgba(61,142,255,.12);}
+.ch-btn:disabled{opacity:.45;cursor:not-allowed;pointer-events:none;}
 
 /* MESSAGES AREA */
 .msgs{
@@ -283,7 +285,7 @@ input,textarea{font-family:inherit;}
   flex:1;min-height:24px;max-height:140px;
   background:transparent;border:none;outline:none;
   color:var(--text);font-family:'Exo 2',sans-serif;
-  font-size:14px;line-height:1.55;resize:none;
+  font-size:16px;line-height:1.55;resize:none;
   padding:8px 4px;
 }
 .msg-input::placeholder{color:var(--text3);}
@@ -372,6 +374,7 @@ input,textarea{font-family:inherit;}
   .msg-bubble{font-size:13.5px;padding:8px 12px;}
   .msgs{padding:16px 12px;}
   .input-area{padding:10px 12px 12px;}
+  .msg-input{font-size:16px;}
   .em-list{grid-template-columns:repeat(7,1fr);}
   .welcome-t{font-size:17px;}
 }
@@ -481,6 +484,7 @@ input,textarea{font-family:inherit;}
         <div class="ch-s" id="chSub">💬 Chat umum komunitas • <span id="onlineTxt">1 online</span></div>
       </div>
       <div class="ch-acts">
+        <button class="ch-btn" id="notifBtn" onclick="toggleNotifications()" title="Notifikasi">🔕</button>
         <button class="ch-btn" onclick="toast('🔍 Search coming soon!')" title="Search">🔍</button>
         <button class="ch-btn" onclick="toast('📌 Pinned messages')" title="Pin">📌</button>
         <button class="ch-btn" onclick="refreshChat()" title="Refresh">🔄</button>
@@ -540,9 +544,15 @@ const CHAT_BOOTSTRAP=@json($chatBootstrap ?? []);
 const CHAT_ROUTES={
   state:@json(route('chat.state')),
   store:@json(route('chat.store')),
+  pushSubscribe:@json(route('chat.push.subscribe')),
+  pushUnsubscribe:@json(route('chat.push.unsubscribe')),
   messagesBase:@json(url('/chat/messages')),
 };
 const CSRF_TOKEN=document.querySelector('meta[name="csrf-token"]')?.content||'';
+const PUSH_BOOTSTRAP=CHAT_BOOTSTRAP.push||{};
+const PUSH_CONFIGURED=Boolean(PUSH_BOOTSTRAP.configured&&PUSH_BOOTSTRAP.publicKey);
+const PUSH_PUBLIC_KEY=String(PUSH_BOOTSTRAP.publicKey||'');
+const PUSH_SUPPORTED=('serviceWorker' in navigator)&&('PushManager' in window);
 
 let ME=CHAT_BOOTSTRAP.currentUser||null;
 let MSGS=Array.isArray(CHAT_BOOTSTRAP.messages)?CHAT_BOOTSTRAP.messages:[];
@@ -553,6 +563,10 @@ let tt;
 let LAST_MESSAGES_SIG='';
 let LAST_ONLINE_SIG='';
 let LAST_ME_SIG='';
+let LAST_MESSAGE_ID=null;
+let NOTIF_ENABLED=false;
+let CHAT_SW_REG=null;
+let PUSH_SUBSCRIPTION=null;
 
 async function api(url,{method='GET',body}={}){
   const options={
@@ -595,6 +609,8 @@ function applyState(data){
   const nextMe=data.currentUser||ME;
   const nextMessages=Array.isArray(data.messages)?data.messages:MSGS;
   const nextOnlineUsers=Array.isArray(data.onlineUsers)?data.onlineUsers:ONLINE_USERS;
+  const prevLastMessage=Array.isArray(MSGS)&&MSGS.length?MSGS[MSGS.length-1]:null;
+  const nextLastMessage=nextMessages.length?nextMessages[nextMessages.length-1]:null;
   const meSig=stateSig(nextMe);
   const messagesSig=stateSig(nextMessages);
   const onlineSig=stateSig(nextOnlineUsers);
@@ -615,6 +631,7 @@ function applyState(data){
   if(messagesChanged){
     renderMsgs();
     LAST_MESSAGES_SIG=messagesSig;
+    maybeNotifyNewMessage(prevLastMessage,nextLastMessage);
   }
 
   if(onlineChanged){
@@ -730,6 +747,226 @@ function renderMsgs(){
 }
 function scrollBottom(){const box=document.getElementById('msgsList');setTimeout(()=>{box.scrollTop=box.scrollHeight;},10);}
 function isNearBottom(){const b=document.getElementById('msgsList');return b.scrollHeight-b.scrollTop-b.clientHeight<120;}
+
+async function setupNotifications(){
+  updateNotificationButton();
+
+  if('serviceWorker' in navigator){
+    try{
+      CHAT_SW_REG=await navigator.serviceWorker.getRegistration();
+      if(!CHAT_SW_REG){
+        CHAT_SW_REG=await navigator.serviceWorker.register('/sw.js');
+      }
+      CHAT_SW_REG=await navigator.serviceWorker.ready;
+    }catch(error){
+      CHAT_SW_REG=null;
+    }
+  }
+
+  if(typeof Notification==='undefined'){
+    updateNotificationButton();
+    return;
+  }
+
+  if(PUSH_CONFIGURED&&PUSH_SUPPORTED&&CHAT_SW_REG){
+    try{
+      PUSH_SUBSCRIPTION=await CHAT_SW_REG.pushManager.getSubscription();
+      NOTIF_ENABLED=Boolean(PUSH_SUBSCRIPTION);
+
+      if(PUSH_SUBSCRIPTION){
+        await savePushSubscription(PUSH_SUBSCRIPTION);
+      }
+    }catch(error){
+      PUSH_SUBSCRIPTION=null;
+    }
+  }else if(Notification.permission==='granted'){
+    NOTIF_ENABLED=true;
+  }
+
+  updateNotificationButton();
+}
+
+function updateNotificationButton(){
+  const btn=document.getElementById('notifBtn');
+  if(!btn)return;
+
+  const permission=typeof Notification!=='undefined'?Notification.permission:'denied';
+  const active=permission==='granted'&&NOTIF_ENABLED;
+  const unsupported=typeof Notification==='undefined'||(PUSH_CONFIGURED&&!PUSH_SUPPORTED);
+  btn.disabled=unsupported;
+  btn.classList.toggle('active',active);
+  btn.textContent=active?'🔔':'🔕';
+  btn.title=active
+    ? (PUSH_SUBSCRIPTION?'Notifikasi push aktif':'Notifikasi aktif')
+    : unsupported
+      ? 'Perangkat ini belum mendukung push notification'
+      : permission==='denied'
+        ? 'Izin notifikasi ditolak'
+        : 'Aktifkan notifikasi';
+}
+
+async function toggleNotifications(){
+  if(typeof Notification==='undefined'){
+    toast('⚠️ Browser ini belum mendukung notifikasi.');
+    return;
+  }
+
+  if(PUSH_CONFIGURED&&!PUSH_SUPPORTED){
+    toast('⚠️ Push notification perlu browser yang mendukung PWA/Push API.');
+    return;
+  }
+
+  if(NOTIF_ENABLED){
+    if(PUSH_SUBSCRIPTION){
+      try{
+        await api(CHAT_ROUTES.pushUnsubscribe,{
+          method:'DELETE',
+          body:{endpoint:PUSH_SUBSCRIPTION.endpoint},
+        });
+      }catch(error){
+        // Ignore unsubscribe API issues and continue clearing the local subscription.
+      }
+
+      try{
+        await PUSH_SUBSCRIPTION.unsubscribe();
+      }catch(error){
+        // Ignore browser unsubscribe issues.
+      }
+
+      PUSH_SUBSCRIPTION=null;
+    }
+
+    NOTIF_ENABLED=false;
+    updateNotificationButton();
+    toast('🔕 Notifikasi dimatikan.');
+    return;
+  }
+
+  if(Notification.permission==='denied'){
+    toast('⚠️ Izin notifikasi ditolak. Aktifkan lagi dari pengaturan browser.');
+    return;
+  }
+
+  if(Notification.permission==='default'){
+    const result=await Notification.requestPermission();
+
+    if(result!=='granted'){
+      updateNotificationButton();
+      toast('⚠️ Izin notifikasi belum diberikan.');
+      return;
+    }
+  }
+
+  if(PUSH_CONFIGURED&&CHAT_SW_REG){
+    try{
+      PUSH_SUBSCRIPTION=await CHAT_SW_REG.pushManager.subscribe({
+        userVisibleOnly:true,
+        applicationServerKey:urlBase64ToUint8Array(PUSH_PUBLIC_KEY),
+      });
+
+      await savePushSubscription(PUSH_SUBSCRIPTION);
+      NOTIF_ENABLED=true;
+      updateNotificationButton();
+      toast('🔔 Notifikasi chat aktif di perangkat ini.');
+      return;
+    }catch(error){
+      PUSH_SUBSCRIPTION=null;
+      updateNotificationButton();
+      toast('⚠️ Gagal mengaktifkan push notification di perangkat ini.');
+      return;
+    }
+  }
+
+  NOTIF_ENABLED=true;
+  updateNotificationButton();
+  toast('🔔 Notifikasi pesan baru aktif.');
+}
+
+async function savePushSubscription(subscription){
+  if(!subscription||!PUSH_CONFIGURED){
+    return;
+  }
+
+  await api(CHAT_ROUTES.pushSubscribe,{
+    method:'POST',
+    body:{
+      subscription:subscription.toJSON(),
+      content_encoding:getSupportedContentEncoding(),
+    },
+  });
+}
+
+function getSupportedContentEncoding(){
+  if(typeof PushManager==='undefined'||!Array.isArray(PushManager.supportedContentEncodings)){
+    return null;
+  }
+
+  return PushManager.supportedContentEncodings[0]||null;
+}
+
+function urlBase64ToUint8Array(base64String){
+  const padding='='.repeat((4-base64String.length%4)%4);
+  const base64=(base64String+padding).replace(/-/g,'+').replace(/_/g,'/');
+  const rawData=window.atob(base64);
+  const outputArray=new Uint8Array(rawData.length);
+
+  for(let i=0;i<rawData.length;i+=1){
+    outputArray[i]=rawData.charCodeAt(i);
+  }
+
+  return outputArray;
+}
+
+function maybeNotifyNewMessage(previousMessage,nextMessage){
+  if(!nextMessage||!ME){
+    return;
+  }
+
+  if(LAST_MESSAGE_ID===null){
+    LAST_MESSAGE_ID=nextMessage.id;
+    return;
+  }
+
+  if(nextMessage.id===LAST_MESSAGE_ID){
+    return;
+  }
+
+  LAST_MESSAGE_ID=nextMessage.id;
+
+  if(!NOTIF_ENABLED||PUSH_SUBSCRIPTION||nextMessage.uid===ME.id||document.visibilityState==='visible'){
+    return;
+  }
+
+  notifyNewMessage(nextMessage);
+}
+
+async function notifyNewMessage(message){
+  const title=message.name||'Pesan Baru';
+  const body=String(message.text||'Mengirim pesan baru').slice(0,120);
+
+  try{
+    if(CHAT_SW_REG){
+      await CHAT_SW_REG.showNotification(title,{
+        body,
+        icon:'/pwa-192.png',
+        badge:'/favicon-32.png',
+        tag:`chat-message-${message.id}`,
+        renotify:true,
+        data:{url:'/chat'},
+      });
+      return;
+    }
+
+    new Notification(title,{
+      body,
+      icon:'/pwa-192.png',
+      badge:'/favicon-32.png',
+      tag:`chat-message-${message.id}`,
+    });
+  }catch(error){
+    // Ignore notification delivery issues.
+  }
+}
 
 /* ══════════════ ACTIONS ══════════════ */
 async function sendMsg(){
@@ -881,6 +1118,7 @@ async function refreshChat(){await tick();toast('🔄 Chat di-refresh!');}
 
 /* ══════════════ INIT ══════════════ */
 (async function init(){
+  await setupNotifications();
   applyState({
     currentUser: ME,
     messages: MSGS,

@@ -21,6 +21,8 @@ Route::middleware('discord.auth')->group(function (): void {
     Route::get('/chat', [ChatMessageController::class, 'index'])->name('chat');
     Route::post('/chat', [ChatMessageController::class, 'store'])->name('chat.store');
     Route::get('/chat/state', [ChatMessageController::class, 'state'])->name('chat.state');
+    Route::post('/chat/push/subscribe', [ChatMessageController::class, 'subscribe'])->name('chat.push.subscribe');
+    Route::delete('/chat/push/unsubscribe', [ChatMessageController::class, 'unsubscribe'])->name('chat.push.unsubscribe');
     Route::post('/chat/messages/{chatMessage}/react', [ChatMessageController::class, 'react'])->name('chat.react');
     Route::delete('/chat/messages/{chatMessage}', [ChatMessageController::class, 'destroy'])->name('chat.destroy');
 });

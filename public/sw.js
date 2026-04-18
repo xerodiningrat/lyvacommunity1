@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'lyva-pwa-v2';
+const CACHE_VERSION = 'lyva-pwa-v3';
 const APP_SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const APP_SHELL_ASSETS = [
@@ -61,6 +61,58 @@ self.addEventListener('fetch', (event) => {
   }
 
   event.respondWith(cacheFirst(request));
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+
+  const targetUrl = event.notification?.data?.url || '/chat';
+
+  event.waitUntil((async () => {
+    const allClients = await self.clients.matchAll({
+      type: 'window',
+      includeUncontrolled: true,
+    });
+
+    const existingClient = allClients.find((client) => client.url.includes(targetUrl));
+
+    if (existingClient) {
+      await existingClient.focus();
+      return;
+    }
+
+    await self.clients.openWindow(targetUrl);
+  })());
+});
+
+self.addEventListener('push', (event) => {
+  if (!event.data) {
+    return;
+  }
+
+  let payload = {};
+
+  try {
+    payload = event.data.json();
+  } catch (error) {
+    payload = {
+      title: 'LYVA Community',
+      body: event.data.text(),
+    };
+  }
+
+  event.waitUntil(
+    self.registration.showNotification(payload.title || 'LYVA Community', {
+      body: payload.body || 'Ada pesan baru di chat komunitas.',
+      icon: payload.icon || '/pwa-192.png',
+      badge: payload.badge || '/favicon-32.png',
+      tag: payload.tag || 'lyva-chat-message',
+      renotify: true,
+      data: {
+        url: payload.url || '/chat',
+      },
+    }),
+  );
 });
 
 async function networkFirst(request) {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreChatMessageRequest;
 use App\Models\ChatMessage;
 use App\Models\ChatPresence;
+use App\Services\ChatPushNotificationService;
 use App\Services\DiscordAuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -17,7 +18,7 @@ use Illuminate\View\View;
 
 class ChatMessageController extends Controller
 {
-    public function index(Request $request): View
+    public function index(Request $request, ChatPushNotificationService $chatPushNotificationService): View
     {
         $discordUser = $this->currentUser($request);
         $this->ensureTablesReady();
@@ -29,11 +30,12 @@ class ChatMessageController extends Controller
                 'currentUser' => $discordUser,
                 'messages' => $this->messages(),
                 'onlineUsers' => $this->onlineUsers($discordUser['id']),
+                'push' => $chatPushNotificationService->bootstrap(),
             ],
         ]);
     }
 
-    public function store(StoreChatMessageRequest $request): JsonResponse|RedirectResponse
+    public function store(StoreChatMessageRequest $request, ChatPushNotificationService $chatPushNotificationService): JsonResponse|RedirectResponse
     {
         $discordUser = $this->currentUser($request);
 
@@ -62,6 +64,8 @@ class ChatMessageController extends Controller
             'reply_text' => $request->validated('reply_text'),
         ]);
 
+        $chatPushNotificationService->sendNewMessage($chatMessage);
+
         if ($request->expectsJson()) {
             return response()->json([
                 'ok' => true,
@@ -71,6 +75,38 @@ class ChatMessageController extends Controller
         }
 
         return to_route('chat')->with('status', 'Pesan berhasil dikirim.');
+    }
+
+    public function subscribe(Request $request, ChatPushNotificationService $chatPushNotificationService): JsonResponse
+    {
+        $discordUser = $this->currentUser($request);
+        $validated = $request->validate([
+            'subscription.endpoint' => ['required', 'string', 'max:2048'],
+            'subscription.keys.p256dh' => ['nullable', 'string', 'max:255'],
+            'subscription.keys.auth' => ['nullable', 'string', 'max:255'],
+            'content_encoding' => ['nullable', 'string', 'max:20'],
+        ]);
+
+        $chatPushNotificationService->subscribe(
+            $discordUser['id'],
+            $validated['subscription'],
+            $validated['content_encoding'] ?? null,
+            $request->userAgent(),
+        );
+
+        return response()->json(['ok' => true]);
+    }
+
+    public function unsubscribe(Request $request, ChatPushNotificationService $chatPushNotificationService): JsonResponse
+    {
+        $discordUser = $this->currentUser($request);
+        $validated = $request->validate([
+            'endpoint' => ['required', 'string', 'max:2048'],
+        ]);
+
+        $chatPushNotificationService->unsubscribe($discordUser['id'], $validated['endpoint']);
+
+        return response()->json(['ok' => true]);
     }
 
     public function state(Request $request): JsonResponse
