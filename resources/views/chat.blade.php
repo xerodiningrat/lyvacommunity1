@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <title>LYVA Chat — Live Community Chat</title>
+<meta name="theme-color" content="#010714">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LYVA Community">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32.png') }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon-180.png') }}">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Rajdhani:wght@500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -112,6 +120,7 @@ input,textarea{font-family:inherit;}
 .ch-acts{display:flex;gap:6px;align-items:center;}
 .ch-btn{width:38px;height:38px;border-radius:9px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--text2);transition:all .22s;}
 .ch-btn:hover{background:var(--card2);border-color:var(--border2);color:var(--white);}
+.ch-install{width:auto;padding:0 12px;gap:6px;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--accent3);}
 
 /* MESSAGES AREA */
 .msgs{
@@ -471,6 +480,7 @@ input,textarea{font-family:inherit;}
         <div class="ch-s" id="chSub">💬 Chat umum komunitas • <span id="onlineTxt">1 online</span></div>
       </div>
       <div class="ch-acts">
+        <button class="ch-btn ch-install" type="button" data-install-app hidden>＋ Install</button>
         <button class="ch-btn" onclick="toast('🔍 Search coming soon!')" title="Search">🔍</button>
         <button class="ch-btn" onclick="toast('📌 Pinned messages')" title="Pin">📌</button>
         <button class="ch-btn" onclick="refreshChat()" title="Refresh">🔄</button>
@@ -883,5 +893,6 @@ async function refreshChat(){await tick();toast('🔄 Chat di-refresh!');}
 
 document.getElementById('inpName').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();joinChat();}});
 </script>
+<script src="{{ asset('pwa-register.js') }}" defer></script>
 </body>
 </html>

@@ -4,8 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>@yield('title', 'LYVACOMMUNITY | HOME')</title>
-<link rel="icon" type="image/png" href="{{ asset('lyva-navbar-logo.png') }}">
-<link rel="apple-touch-icon" href="{{ asset('lyva-navbar-logo.png') }}">
+<meta name="theme-color" content="#010714">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LYVA Community">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32.png') }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon-180.png') }}">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg0:#010714;--bg1:#030d1f;--bg2:#061428;--card:#091833;--border:rgba(30,80,160,0.35);--border2:rgba(50,120,220,0.55);--border3:rgba(80,150,255,0.75);--accent:#1a6ef5;--accent2:#3d8eff;--accent3:#6ab0ff;--gold:#f5c842;--gold2:#ffd966;--teal:#00e5b8;--pink:#ff4fa3;--red:#ff4444;--green:#22c55e;--text:#cce0ff;--text2:#7aa5d8;--text3:#3d6a9e;--white:#ffffff;--r-sm:10px;--r-md:14px;--r-lg:20px;--r-xl:28px;}
@@ -30,6 +36,8 @@ nav.scrolled{background:rgba(1,7,20,.97);box-shadow:0 4px 30px rgba(0,0,0,.5);}
 .nav-auth-link:hover,.nav-auth-link.act{color:var(--white);background:rgba(26,110,245,.12);border-color:var(--border2);}
 .nav-cta{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 18px;border-radius:12px;border:1px solid rgba(90,157,255,.45);background:linear-gradient(135deg,#2678ff,#0f4fcd)!important;color:#fff!important;box-shadow:0 8px 22px rgba(16,78,206,.32),inset 0 1px 0 rgba(255,255,255,.18);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
 .nav-cta:hover{box-shadow:0 0 28px rgba(26,110,245,.7)!important;transform:translateY(-1px);}
+.nav-install{background:rgba(26,110,245,.08)!important;color:var(--accent3)!important;border-color:var(--border2)!important;box-shadow:none!important;}
+.nav-install:hover{color:var(--white)!important;background:rgba(26,110,245,.18)!important;}
 .nav-hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:8px;background:var(--card);border:1px solid var(--border);border-radius:9px;cursor:pointer;z-index:910;}
 .nav-hamburger span{display:block;height:2px;border-radius:2px;background:var(--text2);transition:all .3s;}
 .nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
@@ -221,6 +229,7 @@ footer{position:relative;z-index:1;background:linear-gradient(to bottom,var(--bg
     <li><a href="{{ route('leaderboard') }}" class="{{ request()->routeIs('leaderboard') ? 'act' : '' }}">🏆 Rank</a></li>
   </ul>
   <div class="nav-auth">
+    <button type="button" class="nav-cta nav-install" data-install-app hidden>＋ Install App</button>
     @if($discordAuthUser)
       <span class="nav-auth-name">{{ \Illuminate\Support\Str::limit($discordAuthUser['name'], 18) }}</span>
       <a href="{{ ($discordAuthUser['is_core_member'] ?? false) ? route('dashboard') : route('home') }}" class="nav-auth-link {{ request()->routeIs('dashboard*') ? 'act' : '' }}">
@@ -244,6 +253,7 @@ footer{position:relative;z-index:1;background:linear-gradient(to bottom,var(--bg
   @if($discordAuthUser && ($discordAuthUser['is_core_member'] ?? false))
     <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard*') ? 'act' : '' }}" onclick="closeMenu()">🧭 Dashboard</a>
   @endif
+  <button type="button" class="m-cta nav-install" data-install-app hidden>＋ Install App</button>
   @if($discordAuthUser)
     <a href="{{ route('auth.discord.logout') }}" class="m-cta" onclick="closeMenu()">🔓 Logout</a>
   @else
@@ -301,6 +311,7 @@ function closeMenu(){document.getElementById('hbg').classList.remove('open');doc
 let tt;function toast(msg){clearTimeout(tt);document.getElementById('tMsg').textContent=msg;const t=document.getElementById('toast');t.classList.add('show');tt=setTimeout(()=>t.classList.remove('show'),3400);}
 function addCart(name){toast('🛒 '+name+' ditambahkan ke keranjang!');}
 </script>
+<script src="{{ asset('pwa-register.js') }}" defer></script>
 @if (session('toast'))
 <script>window.addEventListener('load',()=>toast(@json(session('toast'))));</script>
 @endif

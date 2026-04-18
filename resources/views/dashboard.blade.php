@@ -4,8 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>LYVACOMMUNITY | DASHBOARD</title>
-<link rel="icon" type="image/png" href="{{ asset('lyva-navbar-logo.png') }}">
-<link rel="apple-touch-icon" href="{{ asset('lyva-navbar-logo.png') }}">
+<meta name="theme-color" content="#010714">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LYVA Community">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="{{ asset('manifest.webmanifest') }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32.png') }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon-180.png') }}">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -109,6 +115,7 @@ input,select,textarea{font-family:inherit;}
 .tb-acts{display:flex;align-items:center;gap:8px;margin-left:auto;}
 .tb-btn{width:40px;height:40px;border-radius:10px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--text2);transition:all .22s;position:relative;}
 .tb-btn:hover{background:var(--card2);border-color:var(--border2);color:var(--white);transform:translateY(-1px);}
+.tb-install{width:auto;padding:0 14px;gap:7px;font-size:12px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--accent3);}
 .tb-ndot{position:absolute;top:7px;right:7px;width:8px;height:8px;background:var(--red);border-radius:50%;border:2px solid var(--card);animation:bdLive 2s infinite;}
 
 /* ══════════════ CONTENT ══════════════ */
@@ -532,6 +539,7 @@ select.mi{cursor:pointer;}
       <div class="tb-title"><div class="tb-t" id="pageTitle">Dashboard</div><div class="tb-sub" id="pageSub">Selamat datang kembali, Admin!</div></div>
       <div class="tb-search"><span class="tb-si">🔍</span><input type="text" placeholder="Cari member, event, item..."><span class="tb-sk">⌘ K</span></div>
       <div class="tb-acts">
+        <button class="tb-btn tb-install always" type="button" data-install-app hidden>＋ Install</button>
         <button class="tb-btn always" onclick="toggleTheme()" title="Theme">🌙</button>
         <button class="tb-btn always" onclick="toggleNtf()" title="Notifikasi">🔔<span class="tb-ndot"></span></button>
         <button class="tb-btn" onclick="toast('Messages')" title="Messages">✉️</button>
@@ -1126,5 +1134,6 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){document.querySelectorAll('.mbg.open').forEach(m=>m.classList.remove('open'));closeSB();document.getElementById('ntfPanel').classList.remove('open');}
 });
 </script>
+<script src="{{ asset('pwa-register.js') }}" defer></script>
 </body>
 </html>
