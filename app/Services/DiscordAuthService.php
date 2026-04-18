@@ -12,7 +12,13 @@ class DiscordAuthService
 
     public function redirectUrl(): string
     {
-        return (string) config('services.discord.redirect_uri', route('auth.discord.callback'));
+        $configuredRedirect = trim((string) config('services.discord.redirect_uri', ''));
+
+        if ($configuredRedirect !== '') {
+            return $configuredRedirect;
+        }
+
+        return route('auth.discord.callback');
     }
 
     public function isConfigured(): bool
@@ -116,7 +122,7 @@ class DiscordAuthService
             'avatar_url' => $this->avatarUrl($user),
             'is_core_member' => $primaryRole !== null,
             'primary_role' => $primaryRole['label'] ?? null,
-            'redirect_to' => $primaryRole !== null ? route('dashboard') : route('home'),
+            'redirect_to' => route('home'),
         ];
 
         session([self::SESSION_KEY => $payload]);

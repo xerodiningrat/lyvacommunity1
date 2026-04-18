@@ -47,6 +47,7 @@ input,select,textarea{font-family:inherit;}
   border-right:1px solid var(--border);z-index:500;
   display:flex;flex-direction:column;overflow-y:auto;
   transition:transform .35s cubic-bezier(.4,0,.2,1);
+  touch-action:pan-y;
 }
 .sb-head{padding:22px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
 .sb-logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(38,120,255,.2),rgba(106,176,255,.12));border:1px solid rgba(106,176,255,.28);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px var(--glow);flex-shrink:0;overflow:hidden;padding:6px;}
@@ -1073,6 +1074,49 @@ window.addEventListener('load',()=>setTimeout(()=>{
 /* SIDEBAR */
 function openSB(){document.getElementById('sb').classList.add('open');document.getElementById('sbOvl').classList.add('show');}
 function closeSB(){document.getElementById('sb').classList.remove('open');document.getElementById('sbOvl').classList.remove('show');}
+
+/* SIDEBAR SWIPE */
+let sbTouchStartX=0;
+let sbTouchCurrentX=0;
+let sbTouching=false;
+const sbEl=document.getElementById('sb');
+
+function resetSidebarSwipe(){
+  sbEl.style.transition='';
+  sbEl.style.transform='';
+}
+
+sbEl.addEventListener('touchstart',e=>{
+  if(window.innerWidth>900||!sbEl.classList.contains('open'))return;
+  sbTouchStartX=e.touches[0].clientX;
+  sbTouchCurrentX=sbTouchStartX;
+  sbTouching=true;
+  sbEl.style.transition='none';
+},{passive:true});
+
+sbEl.addEventListener('touchmove',e=>{
+  if(!sbTouching)return;
+  sbTouchCurrentX=e.touches[0].clientX;
+  const deltaX=Math.min(0,sbTouchCurrentX-sbTouchStartX);
+  sbEl.style.transform=`translateX(${deltaX}px)`;
+},{passive:true});
+
+sbEl.addEventListener('touchend',()=>{
+  if(!sbTouching)return;
+  const deltaX=sbTouchCurrentX-sbTouchStartX;
+  sbTouching=false;
+
+  if(deltaX<-70){
+    resetSidebarSwipe();
+    closeSB();
+    return;
+  }
+
+  resetSidebarSwipe();
+  if(window.innerWidth<=900){
+    sbEl.classList.add('open');
+  }
+});
 
 /* PAGE NAV */
 const TITLES={dash:['📊 Dashboard','Selamat datang kembali, Admin!'],members:['👥 Member Manager','Kelola semua member'],shop:['🛒 Shop Manager','Kelola item eksklusif'],events:['🎉 Event Manager','Kelola event dan kompetisi'],analytics:['📈 Analytics','Deep insights komunitas'],live:['🔴 Live Events','Event sedang berlangsung'],rewards:['🎁 Rewards','Kelola reward member'],leaderboard:['🏆 Leaderboard','Ranking player'],chat:['💬 Chat Log','Monitor komunitas'],announce:['📢 Pengumuman','Broadcast komunitas'],reports:['🚨 Laporan','Review laporan user'],settings:['⚙️ Pengaturan','Konfigurasi sistem'],logs:['📋 Activity Log','Riwayat aktivitas']};

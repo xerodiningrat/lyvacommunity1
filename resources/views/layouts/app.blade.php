@@ -232,8 +232,8 @@ footer{position:relative;z-index:1;background:linear-gradient(to bottom,var(--bg
     <button type="button" class="nav-cta nav-install" data-install-app hidden>＋ Install App</button>
     @if($discordAuthUser)
       <span class="nav-auth-name">{{ \Illuminate\Support\Str::limit($discordAuthUser['name'], 18) }}</span>
-      <a href="{{ ($discordAuthUser['is_core_member'] ?? false) ? route('dashboard') : route('home') }}" class="nav-auth-link {{ request()->routeIs('dashboard*') ? 'act' : '' }}">
-        {{ ($discordAuthUser['is_core_member'] ?? false) ? '🧭 Dashboard' : '🏠 Home' }}
+      <a href="{{ route('home') }}" class="nav-auth-link {{ request()->routeIs('home') ? 'act' : '' }}">
+        🏠 Home
       </a>
       <a href="{{ route('auth.discord.logout') }}" class="nav-cta">Logout</a>
     @else
