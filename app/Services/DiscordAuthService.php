@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use RuntimeException;
@@ -9,6 +10,8 @@ use RuntimeException;
 class DiscordAuthService
 {
     public const SESSION_KEY = 'discord_auth';
+    public const REMEMBER_COOKIE = 'lyva_discord_remember';
+    public const REMEMBER_MINUTES = 43200;
 
     public function redirectUrl(): string
     {
@@ -137,12 +140,76 @@ class DiscordAuthService
         return is_array($user) ? $user : null;
     }
 
+    public function currentUserFromRequest(Request $request): ?array
+    {
+        $sessionUser = $request->session()->get(self::SESSION_KEY);
+
+        if (is_array($sessionUser)) {
+            return $sessionUser;
+        }
+
+        return $this->restoreRememberedUser($request);
+    }
+
+    public function restoreRememberedUser(Request $request): ?array
+    {
+        $sessionUser = $request->session()->get(self::SESSION_KEY);
+
+        if (is_array($sessionUser)) {
+            return $sessionUser;
+        }
+
+        $remembered = $request->cookie(self::REMEMBER_COOKIE);
+
+        if (! is_string($remembered) || $remembered === '') {
+            return null;
+        }
+
+        $payload = json_decode(urldecode($remembered), true);
+
+        if (! is_array($payload) || ! $this->isValidPayload($payload)) {
+            return null;
+        }
+
+        $request->session()->put(self::SESSION_KEY, $payload);
+
+        return $payload;
+    }
+
+    public function queueRememberCookie(array $payload): void
+    {
+        cookie()->queue(
+            cookie(
+                self::REMEMBER_COOKIE,
+                json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                self::REMEMBER_MINUTES,
+                '/',
+                config('session.domain'),
+                (bool) config('session.secure'),
+                true,
+                false,
+                (string) config('session.same_site', 'lax'),
+            ),
+        );
+    }
+
+    public function clearRememberCookie(): void
+    {
+        cookie()->queue(cookie()->forget(
+            self::REMEMBER_COOKIE,
+            '/',
+            config('session.domain'),
+        ));
+    }
+
     public function logout(): void
     {
         session()->forget([
             self::SESSION_KEY,
             'discord_oauth_state',
         ]);
+
+        $this->clearRememberCookie();
     }
 
     protected function fetchGuildMember(string $userId): ?array
@@ -214,5 +281,17 @@ class DiscordAuthService
             $avatar,
             str_starts_with($avatar, 'a_') ? 'gif' : 'png',
         );
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     */
+    protected function isValidPayload(array $payload): bool
+    {
+        return filled($payload['id'] ?? null)
+            && filled($payload['name'] ?? null)
+            && filled($payload['username'] ?? null)
+            && array_key_exists('is_core_member', $payload)
+            && filled($payload['redirect_to'] ?? null);
     }
 }

@@ -14,7 +14,7 @@ class EnsureDiscordCoreMember
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $discordUser = $request->session()->get(DiscordAuthService::SESSION_KEY);
+        $discordUser = app(DiscordAuthService::class)->currentUserFromRequest($request);
 
         if (! is_array($discordUser)) {
             return redirect()->route('auth.discord.redirect');

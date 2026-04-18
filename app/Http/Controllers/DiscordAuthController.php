@@ -32,6 +32,8 @@ class DiscordAuthController extends Controller
                 $request->query('state'),
             );
 
+            $discordAuthService->queueRememberCookie($discordUser);
+
             return redirect()->to($discordUser['redirect_to'])->with(
                 'toast',
                 $discordUser['is_core_member']

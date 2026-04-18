@@ -11,6 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->web(append: [
+            \App\Http\Middleware\RestoreDiscordRememberedSession::class,
+        ]);
+
         $middleware->alias([
             'discord.auth' => \App\Http\Middleware\EnsureDiscordAuthenticated::class,
             'discord.core' => \App\Http\Middleware\EnsureDiscordCoreMember::class,

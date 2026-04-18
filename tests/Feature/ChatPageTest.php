@@ -2,6 +2,7 @@
 
 use App\Models\ChatMessage;
 use App\Services\DiscordAuthService;
+use Illuminate\Http\Request;
 
 test('chat page redirects guest users to discord login', function () {
     $this->get(route('chat'))
@@ -39,17 +40,39 @@ test('discord members can send chat messages', function () {
     ]);
 });
 
+test('discord remember cookie restores login payload', function () {
+    $request = Request::create('/chat', 'GET', [], [
+        DiscordAuthService::REMEMBER_COOKIE => json_encode(discordMemberPayload(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+    ]);
+
+    $session = app('session')->driver();
+    $session->start();
+    $request->setLaravelSession($session);
+
+    $restored = app(DiscordAuthService::class)->restoreRememberedUser($request);
+
+    expect($restored)
+        ->toBeArray()
+        ->and($restored['id'])->toBe('discord-member-1')
+        ->and($request->session()->get(DiscordAuthService::SESSION_KEY)['username'])->toBe('lyvamember');
+});
+
 function discordMemberSession(): array
 {
     return [
-        DiscordAuthService::SESSION_KEY => [
-            'id' => 'discord-member-1',
-            'name' => 'Lyva Member',
-            'username' => 'lyvamember',
-            'avatar_url' => null,
-            'is_core_member' => false,
-            'primary_role' => null,
-            'redirect_to' => route('home'),
-        ],
+        DiscordAuthService::SESSION_KEY => discordMemberPayload(),
+    ];
+}
+
+function discordMemberPayload(): array
+{
+    return [
+        'id' => 'discord-member-1',
+        'name' => 'Lyva Member',
+        'username' => 'lyvamember',
+        'avatar_url' => null,
+        'is_core_member' => false,
+        'primary_role' => null,
+        'redirect_to' => route('home'),
     ];
 }

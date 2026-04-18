@@ -7,18 +7,19 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureDiscordAuthenticated
+class RestoreDiscordRememberedSession
 {
+    public function __construct(
+        protected DiscordAuthService $discordAuthService,
+    ) {
+    }
+
     /**
      * @param  Closure(Request): Response  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $discordUser = app(DiscordAuthService::class)->currentUserFromRequest($request);
-
-        if (! is_array($discordUser)) {
-            return redirect()->route('auth.discord.redirect');
-        }
+        $this->discordAuthService->restoreRememberedUser($request);
 
         return $next($request);
     }
