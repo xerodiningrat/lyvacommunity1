@@ -3,12 +3,13 @@
 namespace App\Services;
 
 use App\Models\DiscordGalleryMedia;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Throwable;
 
@@ -28,6 +29,10 @@ class DiscordGallery
      */
     public function get(?int $limit = null): array
     {
+        if (! $this->galleryTableIsReady()) {
+            return [];
+        }
+
         $this->syncIfNeeded();
 
         $query = DiscordGalleryMedia::query()
@@ -54,6 +59,19 @@ class DiscordGallery
 
     public function paginate(int $perPage = 12): LengthAwarePaginator
     {
+        if (! $this->galleryTableIsReady()) {
+            return new LengthAwarePaginator(
+                items: collect(),
+                total: 0,
+                perPage: $perPage,
+                currentPage: LengthAwarePaginator::resolveCurrentPage(),
+                options: [
+                    'path' => LengthAwarePaginator::resolveCurrentPath(),
+                    'pageName' => 'page',
+                ],
+            );
+        }
+
         $this->syncIfNeeded();
 
         return DiscordGalleryMedia::query()
@@ -74,6 +92,10 @@ class DiscordGallery
 
     public function sync(bool $force = false): int
     {
+        if (! $this->galleryTableIsReady()) {
+            return 0;
+        }
+
         $token = (string) config('services.discord.bot_token', '');
         $channelId = (string) config('services.discord.gallery_channel_id', '');
 
@@ -266,5 +288,18 @@ class DiscordGallery
     protected function cacheTtlSeconds(): int
     {
         return (int) config('services.discord.cache_ttl_seconds', 300);
+    }
+
+    protected function galleryTableIsReady(): bool
+    {
+        try {
+            return Schema::hasTable((new DiscordGalleryMedia())->getTable());
+        } catch (Throwable $exception) {
+            Log::warning('Discord gallery table check failed.', [
+                'message' => $exception->getMessage(),
+            ]);
+
+            return false;
+        }
     }
 }
