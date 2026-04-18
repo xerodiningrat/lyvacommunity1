@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lyva Community — Roblox</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ======== CANVAS BINTANG JATUH ======== -->
+<canvas id="starCanvas"></canvas>
+
+<!-- ======== PARTICLES ======== -->
+<div class="particles" id="particles"></div>
+
+<!-- ======== NAVBAR ======== -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <div class="nav-logo">
+      <div class="logo-icon">
+        <i class="fa-solid fa-meteor"></i>
+      </div>
+      <span class="logo-text">Lyva<span class="logo-accent">Community</span></span>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home" class="nav-link active"><i class="fa-solid fa-house-chimney"></i> Home</a></li>
+      <li><a href="#about" class="nav-link"><i class="fa-solid fa-star"></i> About</a></li>
+      <li><a href="#gallery" class="nav-link"><i class="fa-solid fa-images"></i> Gallery</a></li>
+      <li><a href="#shop" class="nav-link"><i class="fa-solid fa-bag-shopping"></i> Shop</a></li>
+      <li><a href="#members" class="nav-link"><i class="fa-solid fa-users"></i> Members</a></li>
+      <li><a href="#events" class="nav-link"><i class="fa-solid fa-calendar-star"></i> Events</a></li>
+      <li><a href="#contact" class="nav-link"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn-join pulse-btn" onclick="openModal('joinModal')">
+        <i class="fa-solid fa-rocket"></i> Join Now
+      </button>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ======== HERO ======== -->
+<section class="hero" id="home">
+  <div class="hero-bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <i class="fa-solid fa-fire"></i> #1 Roblox Community Indonesia
+    </div>
+    <h1 class="hero-title">
+      Selamat Datang di<br />
+      <span class="gradient-text">Lyva Community</span>
+    </h1>
+    <p class="hero-desc">
+      Bergabunglah dengan ribuan player Roblox terbaik Indonesia!<br />
+      Game seru, event epic, dan teman-teman keren menunggumu! 🚀
+    </p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num" data-target="12500">0</div>
+        <div class="stat-label"><i class="fa-solid fa-users"></i> Members</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="350">0</div>
+        <div class="stat-label"><i class="fa-solid fa-gamepad"></i> Games</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="980">0</div>
+        <div class="stat-label"><i class="fa-solid fa-trophy"></i> Events</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-num" data-target="99">0</div>
+        <div class="stat-label"><i class="fa-solid fa-heart"></i> Happy %</div>
+      </div>
+    </div>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="openModal('joinModal')">
+        <i class="fa-solid fa-rocket"></i> Gabung Sekarang
+      </button>
+      <a href="#about" class="btn-outline">
+        <i class="fa-solid fa-play"></i> Pelajari Lebih
+      </a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="roblox-card floating">
+      <div class="roblox-avatar">
+        <div class="avatar-ring"></div>
+        <div class="avatar-body">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <div class="avatar-badge"><i class="fa-solid fa-crown"></i></div>
+      </div>
+      <div class="roblox-info">
+        <div class="roblox-name">LyvaMaster</div>
+        <div class="roblox-rank"><i class="fa-solid fa-star"></i> Admin</div>
+        <div class="roblox-robux"><i class="fa-solid fa-coins"></i> 50,000 Robux</div>
+      </div>
+      <div class="roblox-status online"><span></span> Online</div>
+    </div>
+    <div class="floating-icons">
+      <div class="fi fi-1"><i class="fa-solid fa-sword"></i></div>
+      <div class="fi fi-2"><i class="fa-solid fa-shield-halved"></i></div>
+      <div class="fi fi-3"><i class="fa-solid fa-gem"></i></div>
+      <div class="fi fi-4"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+      <div class="fi fi-5"><i class="fa-solid fa-skull-crossbones"></i></div>
+      <div class="fi fi-6"><i class="fa-solid fa-dragon"></i></div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-dot"></div>
+    <span>Scroll Down</span>
+  </div>
+</section>
+
+<!-- ======== MARQUEE ======== -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span><i class="fa-solid fa-star"></i> Roblox Community</span>
+    <span><i class="fa-solid fa-fire"></i> Epic Events</span>
+    <span><i class="fa-solid fa-gem"></i> Free Robux Giveaway</span>
+    <span><i class="fa-solid fa-trophy"></i> Tournament</span>
+    <span><i class="fa-solid fa-crown"></i> VIP Members</span>
+    <span><i class="fa-solid fa-bolt"></i> Daily Challenges</span>
+    <span><i class="fa-solid fa-heart"></i> Friendly Community</span>
+    <span><i class="fa-solid fa-gamepad"></i> Fun Games</span>
+    <span><i class="fa-solid fa-star"></i> Roblox Community</span>
+    <span><i class="fa-solid fa-fire"></i> Epic Events</span>
+    <span><i class="fa-solid fa-gem"></i> Free Robux Giveaway</span>
+    <span><i class="fa-solid fa-trophy"></i> Tournament</span>
+    <span><i class="fa-solid fa-crown"></i> VIP Members</span>
+    <span><i class="fa-solid fa-bolt"></i> Daily Challenges</span>
+    <span><i class="fa-solid fa-heart"></i> Friendly Community</span>
+    <span><i class="fa-solid fa-gamepad"></i> Fun Games</span>
+  </div>
+</div>
+
+<!-- ======== ABOUT ======== -->
+<section class="section about" id="about">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag"><i class="fa-solid fa-info-circle"></i> About Us</div>
+      <h2 class="section-title">Kenapa Harus <span class="gradient-text">Lyva Community?</span></h2>
+      <p class="section-desc">Kami adalah komunitas Roblox terbesar dan paling aktif di Indonesia dengan berbagai fitur keren!</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon" style="--c:#4fc3f7">
+          <i class="fa-solid fa-gamepad"></i>
+        </div>
+        <h3>Game Server</h3>
+        <p>Server privat eksklusif khusus member Lyva Community. Bebas lag, bebas hack!</p>
+        <div class="feature-badge">Popular</div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon" style="--c:#ce93d8">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <h3>Tournament</h3>
+        <p>Kompetisi mingguan dengan hadiah Robux jutaan! Buktikan skill kamu disini.</p>
+        <div class="feature-badge hot">Hot</div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon" style="--c:#a5d6a7">
+          <i class="fa-solid fa-gift"></i>
+        </div>
+        <h3>Giveaway</h3>
+        <p>Giveaway Robux, item langka, dan gamepass setiap hari! Jangan sampai ketinggalan.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon" style="--c:#ffcc02">
+          <i class="fa-solid fa-crown"></i>
+        </div>
+        <h3>VIP System</h3>
+        <p>Dapatkan rank VIP dengan keuntungan eksklusif, akses event khusus, dan banyak lagi!</p>
+        <div class="feature-badge new">New</div>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon" style="--c:#ff8a65">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <h3>Anti-Toxic</h3>
+        <p>Komunitas kami anti-toxic dan selalu ramah. Moderator aktif 24/7 menjaga keamanan.</p>
+      </div>
+      <div class="feature-card reveal">
+        <div class="feature-icon" style="--c:#80deea">
+          <i class="fa-solid fa-headset"></i>
+        </div>
+        <h3>Support 24/7</h3>
+        <p>Tim support kami siap membantu kamu kapan saja. Fast response dan friendly!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== GALLERY ======== -->
+<section class="section gallery" id="gallery">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag"><i class="fa-solid fa-images"></i> Gallery</div>
+      <h2 class="section-title">Momen <span class="gradient-text">Epic Kami</span></h2>
+      <p class="section-desc">Screenshot dan video terbaik dari event dan aktivitas komunitas Lyva!</p>
+    </div>
+    <div class="gallery-filter">
+      <button class="filter-btn active" data-filter="all">Semua</button>
+      <button class="filter-btn" data-filter="event">Event</button>
+      <button class="filter-btn" data-filter="tournament">Tournament</button>
+      <button class="filter-btn" data-filter="member">Member</button>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item reveal" data-cat="event">
+        <div class="gallery-img" style="background: linear-gradient(135deg,#1a237e,#4a148c)">
+          <i class="fa-solid fa-fire fa-3x"></i>
+          <div class="gallery-overlay">
+            <div class="gallery-info">
+              <h4>Dragon Event</h4>
+              <p>Epic battle tournament 2024</p>
+              <div class="gallery-tags">
+                <span>Event</span><span>Battle</span>
+              </div>
+            </div>
+            <button class="gallery-btn" onclick="openGallery(0)"><i class="fa-solid fa-expand"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item reveal" data-cat="tournament">
+        <div class="gallery-img" style="background: linear-gradient(135deg,#0d47a1,#006064)">
+          <i class="fa-solid fa-trophy fa-3x"></i>
+          <div class="gallery-overlay">
+            <div class="gallery-info">
+              <h4>Grand Tournament</h4>
+              <p>Monthly championship series</p>
+              <div class="gallery-tags">
+                <span>Tournament</span><span>PvP</span>
+              </div>
+            </div>
+            <button class="gallery-btn" onclick="openGallery(1)"><i class="fa-solid fa-expand"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item reveal large" data-cat="event">
+        <div class="gallery-img" style="background: linear-gradient(135deg,#1b5e20,#0d47a1)">
+          <i class="fa-solid fa-castle fa-3x"></i>
+          <div class="gallery-overlay">
+            <div class="gallery-info">
+              <h4>Castle Wars</h4>
+              <p>Biggest event of the year</p>
+              <div class="gallery-tags">
+                <span>Event</span><span>Team</span><span>Epic</span>
+              </div>
+            </div>
+            <button class="gallery-btn" onclick="openGallery(2)"><i class="fa-solid fa-expand"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item reveal" data-cat="member">
+        <div class="gallery-img" style="background: linear-gradient(135deg,#4a148c,#880e4f)">
+          <i class="fa-solid fa-users fa-3x"></i>
+          <div class="gallery-overlay">
+            <div class="gallery-info">
+              <h4>Member Gathering</h4>
+              <p>Kumpul bareng 500+ member</p>
+              <div class="gallery-tags">
+                <span>Member</span><span>Fun</span>
+              </div>
+            </div>
+            <button class="gallery-btn" onclick="openGallery(3)"><i class="fa-solid fa-expand"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item reveal" data-cat="tournament">
+        <div class="gallery-img" style="background: linear-gradient(135deg,#e65100,#1a237e)">
+          <i class="fa-solid fa-sword fa-3x"></i>
+          <div class="gallery-overlay">
+            <div class="gallery-info">
+              <h4>Blade Masters</h4>
+              <p>1v1 sword fighting championship</p>
+              <div class="gallery-tags">
+                <span>Tournament</span><span>1v1</span>
+              </div>
+            </div>
+            <button class="gallery-btn" onclick="openGallery(4)"><i class="fa-solid fa-expand"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="gallery-item reveal" data-cat="event">
+        <div class="gallery-img" style="background: linear-gradient(135deg,#006064,#880e4f)">
+          <i class="fa-solid fa-dragon fa-3x"></i>
+          <div class="gallery-overlay">
+            <div class="gallery-info">
+              <h4>Dragon Hunt</h4>
+              <p>Cooperative boss hunting event</p>
+              <div class="gallery-tags">
+                <span>Event</span><span>Co-op</span>
+              </div>
+            </div>
+            <button class="gallery-btn" onclick="openGallery(5)"><i class="fa-solid fa-expand"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== SHOP ======== -->
+<section class="section shop" id="shop">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag"><i class="fa-solid fa-bag-shopping"></i> Shop</div>
+      <h2 class="section-title">Lyva <span class="gradient-text">Community Store</span></h2>
+      <p class="section-desc">Item eksklusif, gamepass, dan merchandise khusus member Lyva Community!</p>
+    </div>
+    <div class="shop-tabs">
+      <button class="shop-tab active" data-tab="items">
+        <i class="fa-solid fa-box"></i> Items
+      </button>
+      <button class="shop-tab" data-tab="passes">
+        <i class="fa-solid fa-ticket"></i> Gamepasses
+      </button>
+      <button class="shop-tab" data-tab="merch">
+        <i class="fa-solid fa-shirt"></i> Merch
+      </button>
+    </div>
+    <div class="shop-panel active" id="tab-items">
+      <div class="shop-grid">
+        <div class="shop-card reveal">
+          <div class="shop-img" style="--bg:linear-gradient(135deg,#1a237e,#6a1b9a)">
+            <i class="fa-solid fa-wand-magic-sparkles fa-2x"></i>
+            <div class="shop-badge sale">-20%</div>
+          </div>
+          <div class="shop-body">
+            <h4>Magic Staff</h4>
+            <p>Tongkat ajaib legendary dengan efek partikel keren!</p>
+            <div class="shop-meta">
+              <div class="shop-stars">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star-half-stroke"></i>
+                <span>(4.5)</span>
+              </div>
+              <span class="shop-rarity legendary">Legendary</span>
+            </div>
+            <div class="shop-price">
+              <span class="price-old">500 <i class="fa-solid fa-coins"></i></span>
+              <span class="price-new">400 <i class="fa-solid fa-coins"></i></span>
+            </div>
+            <button class="btn-buy" onclick="addToCart('Magic Staff', 400)">
+              <i class="fa-solid fa-cart-plus"></i> Beli Sekarang
+            </button>
+          </div>
+        </div>
+        <div class="shop-card reveal">
+          <div class="shop-img" style="--bg:linear-gradient(135deg,#006064,#0d47a1)">
+            <i class="fa-solid fa-shield-halved fa-2x"></i>
+            <div class="shop-badge new">New</div>
+          </div>
+          <div class="shop-body">
+            <h4>Dragon Shield</h4>
+            <p>Perisai dari sisik naga dengan perlindungan max damage!</p>
+            <div class="shop-meta">
+              <div class="shop-stars">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <span>(5.0)</span>
+              </div>
+              <span class="shop-rarity epic">Epic</span>
+            </div>
+            <div class="shop-price">
+              <span class="price-new">750 <i class="fa-solid fa-coins"></i></span>
+            </div>
+            <button class="btn-buy" onclick="addToCart('Dragon Shield', 750)">
+              <i class="fa-solid fa-cart-plus"></i> Beli Sekarang
+            </button>
+          </div>
+        </div>
+        <div class="shop-card reveal">
+          <div class="shop-img" style="--bg:linear-gradient(135deg,#880e4f,#1a237e)">
+            <i class="fa-solid fa-crown fa-2x"></i>
+            <div class="shop-badge hot">Hot 🔥</div>
+          </div>
+          <div class="shop-body">
+            <h4>Royal Crown</h4>
+            <p>Mahkota kerajaan limited edition, hanya 100 tersisa!</p>
+            <div class="shop-meta">
+              <div class="shop-stars">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <span>(5.0)</span>
+              </div>
+              <span class="shop-rarity legendary">Legendary</span>
+            </div>
+            <div class="shop-price">
+              <span class="price-new">1200 <i class="fa-solid fa-coins"></i></span>
+            </div>
+            <button class="btn-buy" onclick="addToCart('Royal Crown', 1200)">
+              <i class="fa-solid fa-cart-plus"></i> Beli Sekarang
+            </button>
+          </div>
+        </div>
+        <div class="shop-card reveal">
+          <div class="shop-img" style="--bg:linear-gradient(135deg,#e65100,#4a148c)">
+            <i class="fa-solid fa-fire fa-2x"></i>
+          </div>
+          <div class="shop-body">
+            <h4>Flame Aura</h4>
+            <p>Aura api yang akan membuat semua mata tertuju padamu!</p>
+            <div class="shop-meta">
+              <div class="shop-stars">
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                <i class="fa-regular fa-star"></i>
+                <span>(4.0)</span>
+              </div>
+              <span class="shop-rarity rare">Rare</span>
+            </div>
+            <div class="shop-price">
+              <span class="price-new">300 <i class="fa-solid fa-coins"></i></span>
+            </div>
+            <button class="btn-buy" onclick="addToCart('Flame Aura', 300)">
+              <i class="fa-solid fa-cart-plus"></i> Beli Sekarang
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="shop-panel" id="tab-passes">
+      <div class="shop-grid">
+        <div class="shop-card reveal">
+          <div class="shop-img" style="--bg:linear-gradient(135deg,#1a237e,#006064)">
+            <i class="fa-solid fa-rocket fa-2x"></i>
+            <div class="shop-badge">VIP</div>
+          </div>
+          <div class="shop-body">
+            <h4>VIP Pass</h4>
+            <p>Akses server VIP eksklusif + bonus item bulanan!</p>
+            <div class="shop-price">
+              <span class="price-new">200 <i class="fa-solid fa-coins"></i>/bulan</span>
+            </div>
+            <button class="btn-buy" onclick="addToCart('VIP Pass', 200)">
+              <i class="fa-solid fa-cart-plus"></i> Subscribe
+            </button>
+          </div>
+        </div>
+        <div class="shop-card reveal">
+          <div class="shop-img" style="--bg:linear-gradient(135deg,#4a148c,#880e4f)">
+            <i class="fa-solid fa-crown fa-2x"></i>
+            <div class="shop-badge">Premium</div>
+          </div>
+          <div class="shop-body">
+            <h4>Premium Pass</h4>
+            <p>Semua fitur VIP + priority support + exclusive events!</p>
+            <div class="shop-price">
+              <span class="price-new">500 <i class="fa-solid fa-coins"></i>/bulan</span>
+            </div>
+            <button class="btn-buy" onclick="addToCart('Premium Pass', 500)">
+              <i class="fa-solid fa-cart-plus"></i> Subscribe
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="shop-panel" id="tab-merch">
+      <div class="shop-grid">
+        <div class="shop-card reveal">
+          <div class="shop-img" style="--bg:linear-gradient(135deg,#0d47a1,#1b5e20)">
+            <i class="fa-solid fa-shirt fa-2x"></i>
+          </div>
+          <div class="shop-body">
+            <h4>Lyva T-Shirt</h4>
+            <p>Kaos official Lyva Community, bahan premium!</p>
+            <div class="shop-price">
+              <span class="price-new">Rp 150.000</span>
+            </div>
+            <button class="btn-buy"><i class="fa-solid fa-cart-plus"></i> Order</button>
+          </div>
+        </div>
+        <div class="shop-card reveal">
+          <div class="shop-img" style="--bg:linear-gradient(135deg,#880e4f,#0d47a1)">
+            <i class="fa-solid fa-hat-cowboy fa-2x"></i>
+          </div>
+          <div class="shop-body">
+            <h4>Lyva Cap</h4>
+            <p>Topi resmi Lyva Community, eksklusif!</p>
+            <div class="shop-price">
+              <span class="price-new">Rp 120.000</span>
+            </div>
+            <button class="btn-buy"><i class="fa-solid fa-cart-plus"></i> Order</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== TOP MEMBERS ======== -->
+<section class="section members" id="members">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag"><i class="fa-solid fa-trophy"></i> Leaderboard</div>
+      <h2 class="section-title">Top <span class="gradient-text">Members</span></h2>
+      <p class="section-desc">Member terbaik dan paling aktif di Lyva Community bulan ini!</p>
+    </div>
+    <div class="leaderboard">
+      <div class="lb-header">
+        <span>Rank</span><span>Member</span><span>Level</span><span>Points</span><span>Badge</span>
+      </div>
+      <div class="lb-row gold reveal">
+        <div class="lb-rank"><i class="fa-solid fa-crown gold-icon"></i> 1</div>
+        <div class="lb-member">
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#f9a825,#e65100)"><i class="fa-solid fa-dragon"></i></div>
+          <div><div class="lb-name">DragonSlayer99</div><div class="lb-tag">@dragon99</div></div>
+        </div>
+        <div class="lb-level"><div class="level-bar"><div style="width:100%"></div></div> Lv.99</div>
+        <div class="lb-points"><i class="fa-solid fa-star"></i> 99,999</div>
+        <div class="lb-badges">
+          <span class="badge-icon" title="Legend"><i class="fa-solid fa-crown"></i></span>
+          <span class="badge-icon" title="Champion"><i class="fa-solid fa-trophy"></i></span>
+          <span class="badge-icon" title="Veteran"><i class="fa-solid fa-shield"></i></span>
+        </div>
+      </div>
+      <div class="lb-row silver reveal">
+        <div class="lb-rank"><i class="fa-solid fa-medal silver-icon"></i> 2</div>
+        <div class="lb-member">
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#4fc3f7,#1a237e)"><i class="fa-solid fa-robot"></i></div>
+          <div><div class="lb-name">CyberLyva</div><div class="lb-tag">@cyberlyva</div></div>
+        </div>
+        <div class="lb-level"><div class="level-bar"><div style="width:90%"></div></div> Lv.87</div>
+        <div class="lb-points"><i class="fa-solid fa-star"></i> 87,450</div>
+        <div class="lb-badges">
+          <span class="badge-icon"><i class="fa-solid fa-fire"></i></span>
+          <span class="badge-icon"><i class="fa-solid fa-bolt"></i></span>
+        </div>
+      </div>
+      <div class="lb-row bronze reveal">
+        <div class="lb-rank"><i class="fa-solid fa-medal bronze-icon"></i> 3</div>
+        <div class="lb-member">
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#ce93d8,#4a148c)"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+          <div><div class="lb-name">MagicQueen</div><div class="lb-tag">@magicqueen</div></div>
+        </div>
+        <div class="lb-level"><div class="level-bar"><div style="width:80%"></div></div> Lv.75</div>
+        <div class="lb-points"><i class="fa-solid fa-star"></i> 75,230</div>
+        <div class="lb-badges">
+          <span class="badge-icon"><i class="fa-solid fa-gem"></i></span>
+        </div>
+      </div>
+      <div class="lb-row reveal">
+        <div class="lb-rank">4</div>
+        <div class="lb-member">
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#a5d6a7,#1b5e20)"><i class="fa-solid fa-leaf"></i></div>
+          <div><div class="lb-name">NatureKnight</div><div class="lb-tag">@natureknight</div></div>
+        </div>
+        <div class="lb-level"><div class="level-bar"><div style="width:65%"></div></div> Lv.62</div>
+        <div class="lb-points"><i class="fa-solid fa-star"></i> 62,100</div>
+        <div class="lb-badges">
+          <span class="badge-icon"><i class="fa-solid fa-seedling"></i></span>
+        </div>
+      </div>
+      <div class="lb-row reveal">
+        <div class="lb-rank">5</div>
+        <div class="lb-member">
+          <div class="lb-avatar" style="background:linear-gradient(135deg,#ff8a65,#880e4f)"><i class="fa-solid fa-cat"></i></div>
+          <div><div class="lb-name">NekoChan_</div><div class="lb-tag">@nekochan</div></div>
+        </div>
+        <div class="lb-level"><div class="level-bar"><div style="width:55%"></div></div> Lv.54</div>
+        <div class="lb-points"><i class="fa-solid fa-star"></i> 54,800</div>
+        <div class="lb-badges">
+          <span class="badge-icon"><i class="fa-solid fa-heart"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== EVENTS ======== -->
+<section class="section events" id="events">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag"><i class="fa-solid fa-calendar-star"></i> Events</div>
+      <h2 class="section-title">Upcoming <span class="gradient-text">Events</span></h2>
+      <p class="section-desc">Event seru yang akan datang! Jangan sampai ketinggalan!</p>
+    </div>
+    <div class="events-grid">
+      <div class="event-card reveal featured">
+        <div class="event-badge-top">Featured</div>
+        <div class="event-header" style="background:linear-gradient(135deg,#1a237e,#6a1b9a)">
+          <i class="fa-solid fa-meteor fa-3x"></i>
+          <div class="event-countdown" id="countdown1">
+            <div class="cd-unit"><span class="cd-num" id="cd1-d">05</span><span class="cd-label">Hari</span></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><span class="cd-num" id="cd1-h">12</span><span class="cd-label">Jam</span></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><span class="cd-num" id="cd1-m">30</span><span class="cd-label">Menit</span></div>
+          </div>
+        </div>
+        <div class="event-body">
+          <h3>⚡ Meteor Storm Tournament</h3>
+          <p>Battle royale dengan 200 player! Hadiah total 50,000 Robux untuk pemenang!</p>
+          <div class="event-info">
+            <span><i class="fa-solid fa-calendar"></i> 23 April 2026</span>
+            <span><i class="fa-solid fa-users"></i> 200 Players</span>
+            <span><i class="fa-solid fa-coins"></i> 50K Robux</span>
+          </div>
+          <button class="btn-event" onclick="openModal('joinModal')">
+            <i class="fa-solid fa-rocket"></i> Daftar Sekarang
+          </button>
+        </div>
+      </div>
+      <div class="event-card reveal">
+        <div class="event-header" style="background:linear-gradient(135deg,#006064,#0d47a1)">
+          <i class="fa-solid fa-dragon fa-2x"></i>
+          <div class="event-countdown">
+            <div class="cd-unit"><span class="cd-num">12</span><span class="cd-label">Hari</span></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><span class="cd-num">08</span><span class="cd-label">Jam</span></div>
+          </div>
+        </div>
+        <div class="event-body">
+          <h3>🐉 Dragon Hunt Season 3</h3>
+          <p>Berburu dragon epik bersama tim! Co-op event terbesar Lyva Community.</p>
+          <div class="event-info">
+            <span><i class="fa-solid fa-calendar"></i> 30 April 2026</span>
+            <span><i class="fa-solid fa-users"></i> Team 5v5</span>
+          </div>
+          <button class="btn-event" onclick="openModal('joinModal')">
+            <i class="fa-solid fa-rocket"></i> Daftar
+          </button>
+        </div>
+      </div>
+      <div class="event-card reveal">
+        <div class="event-header" style="background:linear-gradient(135deg,#880e4f,#4a148c)">
+          <i class="fa-solid fa-gift fa-2x"></i>
+          <div class="event-countdown">
+            <div class="cd-unit"><span class="cd-num">03</span><span class="cd-label">Hari</span></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><span class="cd-num">16</span><span class="cd-label">Jam</span></div>
+          </div>
+        </div>
+        <div class="event-body">
+          <h3>🎁 Weekly Giveaway</h3>
+          <p>Giveaway item langka setiap minggu! Cukup aktif di komunitas untuk ikut serta.</p>
+          <div class="event-info">
+            <span><i class="fa-solid fa-calendar"></i> 21 April 2026</span>
+            <span><i class="fa-solid fa-users"></i> Semua Member</span>
+          </div>
+          <button class="btn-event" onclick="openModal('joinModal')">
+            <i class="fa-solid fa-rocket"></i> Daftar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== CONTACT ======== -->
+<section class="section contact" id="contact">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-tag"><i class="fa-solid fa-envelope"></i> Contact</div>
+      <h2 class="section-title">Hubungi <span class="gradient-text">Kami</span></h2>
+      <p class="section-desc">Ada pertanyaan? Tim kami siap membantu kamu!</p>
+    </div>
+    <div class="contact-wrap">
+      <div class="contact-info">
+        <div class="contact-card reveal">
+          <div class="contact-icon"><i class="fa-brands fa-discord"></i></div>
+          <h4>Discord Server</h4>
+          <p>discord.gg/lyvacommunity</p>
+          <a href="#" class="contact-link">Join Discord <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="contact-card reveal">
+          <div class="contact-icon"><i class="fa-brands fa-instagram"></i></div>
+          <h4>Instagram</h4>
+          <p>@lyva_community</p>
+          <a href="#" class="contact-link">Follow <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="contact-card reveal">
+          <div class="contact-icon"><i class="fa-brands fa-youtube"></i></div>
+          <h4>YouTube</h4>
+          <p>Lyva Community Official</p>
+          <a href="#" class="contact-link">Subscribe <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="contact-card reveal">
+          <div class="contact-icon"><i class="fa-brands fa-tiktok"></i></div>
+          <h4>TikTok</h4>
+          <p>@lyvacommunity</p>
+          <a href="#" class="contact-link">Follow <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <form class="contact-form reveal" onsubmit="sendMessage(event)">
+        <h3>Kirim Pesan</h3>
+        <div class="form-group">
+          <label><i class="fa-solid fa-user"></i> Username Roblox</label>
+          <input type="text" placeholder="Masukkan username..." required />
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-envelope"></i> Email</label>
+          <input type="email" placeholder="email@example.com" required />
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-tag"></i> Subjek</label>
+          <select>
+            <option>Pertanyaan Umum</option>
+            <option>Report Bug</option>
+            <option>Join Staff</option>
+            <option>Kerjasama</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label><i class="fa-solid fa-message"></i> Pesan</label>
+          <textarea rows="4" placeholder="Tulis pesan kamu..." required></textarea>
+        </div>
+        <button type="submit" class="btn-primary w-full">
+          <i class="fa-solid fa-paper-plane"></i> Kirim Pesan
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ======== FOOTER ======== -->
+<footer class="footer">
+  <div class="footer-glow"></div>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-logo">
+          <div class="logo-icon"><i class="fa-solid fa-meteor"></i></div>
+          <span class="logo-text">Lyva<span class="logo-accent">Community</span></span>
+        </div>
+        <p>Komunitas Roblox #1 Indonesia. Bergabunglah dengan 12,500+ member aktif!</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn discord"><i class="fa-brands fa-discord"></i></a>
+          <a href="#" class="social-btn instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" class="social-btn youtube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#" class="social-btn tiktok"><i class="fa-brands fa-tiktok"></i></a>
+          <a href="#" class="social-btn twitter"><i class="fa-brands fa-twitter"></i></a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h5><i class="fa-solid fa-link"></i> Quick Links</h5>
+          <ul>
+            <li><a href="#home"><i class="fa-solid fa-chevron-right"></i> Home</a></li>
+            <li><a href="#about"><i class="fa-solid fa-chevron-right"></i> About</a></li>
+            <li><a href="#gallery"><i class="fa-solid fa-chevron-right"></i> Gallery</a></li>
+            <li><a href="#shop"><i class="fa-solid fa-chevron-right"></i> Shop</a></li>
+            <li><a href="#events"><i class="fa-solid fa-chevron-right"></i> Events</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5><i class="fa-solid fa-gamepad"></i> Games</h5>
+          <ul>
+            <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Blade Ball</a></li>
+            <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Brookhaven</a></li>
+            <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Adopt Me</a></li>
+            <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Blox Fruits</a></li>
+            <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Pet Simulator</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5><i class="fa-solid fa-shield-halved"></i> Legal</h5>
+          <ul>
+            <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Terms of Service</a></li>
+            <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Privacy Policy</a></li>
+            <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Community Rules</a></li>
+            <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Refund Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 <strong>Lyva Community</strong>. All Rights Reserved. Made with <i class="fa-solid fa-heart" style="color:#f44336"></i> for Roblox Players Indonesia</p>
+      <p class="footer-note">Not affiliated with Roblox Corporation</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ======== CART SIDEBAR ======== -->
+<div class="cart-sidebar" id="cartSidebar">
+  <div class="cart-header">
+    <h3><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</h3>
+    <button onclick="toggleCart()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty"><i class="fa-solid fa-box-open fa-2x"></i><p>Cart kosong!</p></div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">Total: <span id="cartTotal">0</span> <i class="fa-solid fa-coins"></i></div>
+    <button class="btn-primary w-full" onclick="checkout()"><i class="fa-solid fa-credit-card"></i> Checkout</button>
+  </div>
+</div>
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+<!-- ======== CART BUTTON ======== -->
+<button class="cart-float" onclick="toggleCart()">
+  <i class="fa-solid fa-cart-shopping"></i>
+  <span class="cart-count" id="cartCount">0</span>
+</button>
+
+<!-- ======== JOIN MODAL ======== -->
+<div class="modal" id="joinModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal('joinModal')"><i class="fa-solid fa-xmark"></i></button>
+    <div class="modal-icon"><i class="fa-solid fa-rocket fa-2x"></i></div>
+    <h2>Gabung <span class="gradient-text">Lyva Community!</span></h2>
+    <p>Bergabunglah dengan 12,500+ member aktif sekarang!</p>
+    <div class="modal-options">
+      <a href="#" class="modal-btn discord">
+        <i class="fa-brands fa-discord fa-lg"></i>
+        <div><strong>Join Discord</strong><small>Server utama kami</small></div>
+      </a>
+      <a href="#" class="modal-btn roblox">
+        <i class="fa-solid fa-gamepad fa-lg"></i>
+        <div><strong>Join Roblox Group</strong><small>Gratis & langsung aktif</small></div>
+      </a>
+      <a href="#" class="modal-btn whatsapp">
+        <i class="fa-brands fa-whatsapp fa-lg"></i>
+        <div><strong>WhatsApp Group</strong><small>Info event & giveaway</small></div>
+      </a>
+    </div>
+    <div class="modal-features">
+      <span><i class="fa-solid fa-check"></i> Gratis bergabung</span>
+      <span><i class="fa-solid fa-check"></i> Bonus item untuk member baru</span>
+      <span><i class="fa-solid fa-check"></i> Event eksklusif</span>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop" id="joinModal-backdrop" onclick="closeModal('joinModal')"></div>
+
+<!-- ======== NOTIFICATION ======== -->
+<div class="notification" id="notification"></div>
+
+<!-- ======== BACK TO TOP ======== -->
+<button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+  <i class="fa-solid fa-chevron-up"></i>
+</button>
+
+<script src="script.js"></script>
+</body>
+</html>
