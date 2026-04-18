@@ -1,22 +1,22 @@
 @extends('layouts.app')
 
-@section('title', 'Leaderboard — LYVA Community')
+@section('title', 'LYVACOMMUNITY | LEADERBOARD')
 
 @section('content')
 <section class="page-hero">
   <div class="page-glow"></div>
   <div class="page-kicker">🏆 RANKING</div>
-  <h1 class="page-title">Top Players LYVA</h1>
-  <p class="page-copy">Leaderboard sekarang sudah manual dari database, tapi strukturnya sudah siap kalau nanti mau dihitung otomatis dari hasil event atau sumber komunitas lain.</p>
+  <h1 class="page-title">Leaderboard LYVA Community</h1>
+  <p class="page-copy">Halaman ini menampilkan peringkat pemain berdasarkan data komunitas yang dikelola melalui backend dan siap dikembangkan ke sistem penilaian otomatis di tahap berikutnya.</p>
 </section>
 
 <div class="divl"></div>
 
 <div class="sw">
   <div class="sh">
-    <div class="stag">📊 BACKEND CONNECTED</div>
-    <h2 class="stitle">Ranking Season Ini</h2>
-    <p class="sdesc">Data rank disimpan manual dulu di backend, dengan kolom poin, wins, event joined, season, dan source supaya nanti gampang diotomatisasi.</p>
+    <div class="stag">📊 PERFORMANCE OVERVIEW</div>
+    <h2 class="stitle">Peringkat Musim Berjalan</h2>
+    <p class="sdesc">Data peringkat saat ini dikelola melalui backend dengan struktur yang telah disiapkan untuk mendukung integrasi penilaian otomatis ke depannya.</p>
   </div>
 
   <div class="lb-list">
@@ -65,8 +65,8 @@
         <div class="lb-rank rn">#0</div>
         <span class="lb-av">🏆</span>
         <div class="lb-inf">
-          <div class="lb-name">Leaderboard Belum Ada Data</div>
-          <div class="lb-sub">Tambahkan rank manual di database agar tabel ranking muncul di sini.</div>
+          <div class="lb-name">Data Leaderboard Belum Tersedia</div>
+          <div class="lb-sub">Tambahkan data peringkat melalui backend agar klasemen dapat ditampilkan pada halaman ini.</div>
         </div>
         <div class="lb-bar-w">
           <div class="lb-bar" style="width:8%"></div>

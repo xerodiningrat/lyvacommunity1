@@ -1,5 +1,6 @@
 <?php
 
+use App\Services\DiscordAuthService;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
@@ -28,16 +29,32 @@ test('the application returns a successful response', function () {
 test('the navbar pages have dedicated routes', function (string $uri, string $expectedText) {
     fakeDiscordForPages();
 
-    $this->get($uri)
+    $request = $this;
+
+    if ($uri === '/dashboard') {
+        $request = $this->withSession([
+            DiscordAuthService::SESSION_KEY => [
+                'id' => 'core-user',
+                'name' => 'Core User',
+                'username' => 'core-user',
+                'avatar_url' => null,
+                'is_core_member' => true,
+                'primary_role' => 'Founder',
+                'redirect_to' => route('dashboard'),
+            ],
+        ]);
+    }
+
+    $request->get($uri)
         ->assertSuccessful()
         ->assertSeeText($expectedText);
 })->with([
     ['/dashboard', 'Dashboard'],
-    ['/gallery', 'Momen Terbaik LYVA'],
-    ['/shop', 'Item Eksklusif'],
-    ['/members', 'Owner, Admin, dan Staff LYVA'],
+    ['/gallery', 'Galeri Komunitas LYVA'],
+    ['/shop', 'Katalog Item Eksklusif'],
+    ['/members', 'Struktur Kepengurusan'],
     ['/events', 'Agenda LYVA'],
-    ['/leaderboard', 'Top Players LYVA'],
+    ['/leaderboard', 'Leaderboard LYVA Community'],
 ]);
 
 test('the members page only shows leadership roles from discord', function () {

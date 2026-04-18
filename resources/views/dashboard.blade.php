@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LYVA Dashboard — Admin Panel</title>
+<title>LYVACOMMUNITY | DASHBOARD</title>
+<link rel="icon" type="image/png" href="{{ asset('lyva-navbar-logo.png') }}">
+<link rel="apple-touch-icon" href="{{ asset('lyva-navbar-logo.png') }}">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -41,7 +43,8 @@ input,select,textarea{font-family:inherit;}
   transition:transform .35s cubic-bezier(.4,0,.2,1);
 }
 .sb-head{padding:22px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0;}
-.sb-logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent3));display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 18px var(--glow);flex-shrink:0;}
+.sb-logo{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,rgba(38,120,255,.2),rgba(106,176,255,.12));border:1px solid rgba(106,176,255,.28);display:flex;align-items:center;justify-content:center;box-shadow:0 0 18px var(--glow);flex-shrink:0;overflow:hidden;padding:6px;}
+.sb-logo-img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 10px rgba(61,142,255,.3));}
 .sb-brand{flex:1;min-width:0;}
 .sb-name{font-family:'Orbitron',monospace;font-size:17px;font-weight:900;color:var(--white);letter-spacing:3px;text-shadow:0 0 12px var(--accent);}
 .sb-sub{font-size:9.5px;color:var(--accent3);letter-spacing:2px;margin-top:-2px;text-transform:uppercase;}
@@ -70,6 +73,7 @@ input,select,textarea{font-family:inherit;}
 .sb-user{display:flex;align-items:center;gap:10px;padding:10px;border-radius:11px;background:rgba(26,110,245,.08);border:1px solid var(--border);cursor:pointer;transition:background .2s;}
 .sb-user:hover{background:rgba(26,110,245,.14);}
 .sb-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f5c842,#ff8c42);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;position:relative;}
+.sb-av-img{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;}
 .sb-av::after{content:'';position:absolute;bottom:-1px;right:-1px;width:10px;height:10px;border-radius:50%;background:var(--green);border:2px solid var(--side);}
 .sb-uinf{flex:1;min-width:0;}
 .sb-un{font-size:13px;font-weight:700;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -348,30 +352,61 @@ select.mi{cursor:pointer;}
 /* RESPONSIVE */
 @media(max-width:1100px){
   .two-col{grid-template-columns:1fr;}
+  .chart-wrap{height:240px;}
 }
 @media(max-width:900px){
+  .sb{width:min(300px,86vw);}
   .sb{transform:translateX(-100%);}
   .sb.open{transform:translateX(0);box-shadow:6px 0 28px rgba(0,0,0,.5);}
   .sb-ovl.show{display:block;}
   .main{margin-left:0;}
   .tb-burger{display:flex;}
   .tb-title{display:none;}
+  .tb{height:auto;min-height:62px;flex-wrap:wrap;padding:10px 14px;gap:10px;}
+  .tb-search{order:3;flex-basis:100%;max-width:none;}
+  .tb-acts{margin-left:auto;}
+  .ct{padding:16px;}
+  .pn-h,.pn-b{padding:16px;}
+  .ph{margin-bottom:18px;}
+  .ntf-panel{top:74px;right:12px;width:min(380px,calc(100vw - 24px));}
 }
 @media(max-width:640px){
-  .tb-search{max-width:none;}
+  .sb{width:min(320px,88vw);}
+  .tb{padding:10px 12px;gap:10px;}
+  .tb-search{max-width:none;order:2;width:100%;flex-basis:100%;}
   .tb-btn:not(.always){display:none;}
   .tb-search input{padding:9px 12px 9px 36px;font-size:12px;}
   .tb-si{left:12px;}
   .tb-sk{display:none;}
+  .ct{padding:12px;}
   .ph{flex-direction:column;align-items:flex-start;}
-  .st-v{font-size:24px;}
+  .ph-t{font-size:clamp(18px,7vw,22px);letter-spacing:1px;}
+  .ph-s{font-size:12px;}
+  .stat-grid{grid-template-columns:1fr 1fr;gap:12px;}
+  .st{padding:18px 16px;}
+  .st-v{font-size:22px;}
+  .pn-h{padding:14px 16px;}
+  .pn-b{padding:16px;}
+  .tbl{min-width:520px;font-size:12px;}
+  .u-n{white-space:normal;}
   .pg{grid-template-columns:repeat(2,1fr);}
   .qa-grid{grid-template-columns:repeat(2,1fr);}
+  .goal-sub{flex-direction:column;align-items:flex-start;gap:4px;}
+  .ntf-panel{top:70px;right:10px;width:calc(100vw - 20px);}
+  .toast{left:12px;right:12px;bottom:12px;max-width:none;transform:translateY(calc(100% + 20px));}
+  .toast.show{transform:translateY(0);}
 }
 @media(max-width:420px){
+  .sb{width:100vw;}
+  .stat-grid{grid-template-columns:1fr;}
   .pg{grid-template-columns:1fr;}
+  .qa-grid{grid-template-columns:1fr;}
   .ph-r{width:100%;}
   .ph-r .btn{flex:1;justify-content:center;}
+  .tb-btn{width:36px;height:36px;}
+  .pn-acts{width:100%;justify-content:flex-start;overflow:auto;padding-bottom:2px;}
+  .pn-tab{flex:0 0 auto;}
+  .tbl{min-width:480px;}
 }
 </style>
 </head>
@@ -439,7 +474,9 @@ select.mi{cursor:pointer;}
   <!-- ══════════ SIDEBAR ══════════ -->
   <aside class="sb" id="sb">
     <div class="sb-head">
-      <div class="sb-logo">🎮</div>
+      <div class="sb-logo">
+        <img src="{{ asset('lyva-navbar-logo.png') }}" alt="LYVA Community" class="sb-logo-img">
+      </div>
       <div class="sb-brand">
         <div class="sb-name">LYVA</div>
         <div class="sb-sub">Admin Panel</div>
@@ -470,9 +507,18 @@ select.mi{cursor:pointer;}
     </div>
 
     <div class="sb-foot">
-      <div class="sb-user" onclick="toast('Profile admin...')">
-        <div class="sb-av">👑</div>
-        <div class="sb-uinf"><div class="sb-un">LyvaKing</div><div class="sb-ur">Owner</div></div>
+      <div class="sb-user" onclick="toast('Login sebagai {{ $discordAuthUser['name'] ?? 'Admin LYVA' }}')">
+        <div class="sb-av">
+          @if(!empty($discordAuthUser['avatar_url']))
+            <img src="{{ $discordAuthUser['avatar_url'] }}" alt="{{ $discordAuthUser['name'] ?? 'Discord User' }}" class="sb-av-img" referrerpolicy="no-referrer">
+          @else
+            👑
+          @endif
+        </div>
+        <div class="sb-uinf">
+          <div class="sb-un">{{ $discordAuthUser['name'] ?? ($discordAuthUser['username'] ?? 'Admin LYVA') }}</div>
+          <div class="sb-ur">{{ strtoupper($discordAuthUser['primary_role'] ?? 'Core Member') }}</div>
+        </div>
         <span style="font-size:13px;color:var(--text3)">⚙️</span>
       </div>
     </div>

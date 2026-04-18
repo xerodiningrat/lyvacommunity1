@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Services\DiscordCommunityStats;
+use App\Services\DiscordAuthService;
 use App\Services\DiscordGallery;
 use Throwable;
 use Illuminate\Support\Facades\View;
@@ -21,9 +22,13 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(DiscordCommunityStats $discordCommunityStats, DiscordGallery $discordGallery): void
+    public function boot(
+        DiscordCommunityStats $discordCommunityStats,
+        DiscordGallery $discordGallery,
+        DiscordAuthService $discordAuthService,
+    ): void
     {
-        View::composer('*', function ($view) use ($discordCommunityStats, $discordGallery): void {
+        View::composer('*', function ($view) use ($discordCommunityStats, $discordGallery, $discordAuthService): void {
             $community = [
                 'active_members' => null,
                 'total_members' => null,
@@ -47,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
 
             $view->with('discordCommunity', $community);
             $view->with('discordGallery', $gallery);
+            $view->with('discordAuthUser', $discordAuthService->currentUser());
         });
     }
 }

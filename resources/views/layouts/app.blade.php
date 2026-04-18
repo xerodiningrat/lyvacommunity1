@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@yield('title', 'LYVA Community')</title>
+<title>@yield('title', 'LYVACOMMUNITY | HOME')</title>
+<link rel="icon" type="image/png" href="{{ asset('lyva-navbar-logo.png') }}">
+<link rel="apple-touch-icon" href="{{ asset('lyva-navbar-logo.png') }}">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--bg0:#010714;--bg1:#030d1f;--bg2:#061428;--card:#091833;--border:rgba(30,80,160,0.35);--border2:rgba(50,120,220,0.55);--border3:rgba(80,150,255,0.75);--accent:#1a6ef5;--accent2:#3d8eff;--accent3:#6ab0ff;--gold:#f5c842;--gold2:#ffd966;--teal:#00e5b8;--pink:#ff4fa3;--red:#ff4444;--green:#22c55e;--text:#cce0ff;--text2:#7aa5d8;--text3:#3d6a9e;--white:#ffffff;--r-sm:10px;--r-md:14px;--r-lg:20px;--r-xl:28px;}
@@ -18,20 +20,24 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 nav.scrolled{background:rgba(1,7,20,.97);box-shadow:0 4px 30px rgba(0,0,0,.5);}
 .nav-logo{display:flex;align-items:center;flex-shrink:0;}
 .nav-logo-mark{display:block;height:48px;width:auto;max-width:min(220px,36vw);object-fit:contain;filter:drop-shadow(0 0 18px rgba(140,188,255,.28)) drop-shadow(0 0 36px rgba(26,110,245,.18));}
-.nav-links{display:flex;align-items:center;gap:4px;list-style:none;}
+.nav-links{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:4px;list-style:none;width:max-content;}
 .nav-links a,.nav-drawer a{border:1px solid transparent;transition:all .22s;text-transform:uppercase;}
 .nav-links a{color:var(--text2);font-size:12px;font-weight:600;letter-spacing:.8px;padding:7px 13px;border-radius:8px;white-space:nowrap;}
 .nav-links a:hover,.nav-links a.act{color:var(--white);background:rgba(26,110,245,.12);border-color:var(--border2);}
-.nav-cta{background:linear-gradient(135deg,var(--accent),#0c49c7)!important;color:#fff!important;border-color:var(--accent)!important;box-shadow:0 0 16px rgba(26,110,245,.4);}
+.nav-auth{display:flex;align-items:center;gap:10px;margin-left:auto;position:relative;z-index:1;flex:0 0 auto;}
+.nav-auth-name{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px;font-weight:700;letter-spacing:1.1px;text-transform:uppercase;color:var(--accent3);}
+.nav-auth-link{color:var(--text2);font-size:12px;font-weight:700;letter-spacing:.8px;padding:7px 13px;border-radius:8px;border:1px solid transparent;text-transform:uppercase;transition:all .22s;white-space:nowrap;}
+.nav-auth-link:hover,.nav-auth-link.act{color:var(--white);background:rgba(26,110,245,.12);border-color:var(--border2);}
+.nav-cta{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 18px;border-radius:12px;border:1px solid rgba(90,157,255,.45);background:linear-gradient(135deg,#2678ff,#0f4fcd)!important;color:#fff!important;box-shadow:0 8px 22px rgba(16,78,206,.32),inset 0 1px 0 rgba(255,255,255,.18);font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;white-space:nowrap;}
 .nav-cta:hover{box-shadow:0 0 28px rgba(26,110,245,.7)!important;transform:translateY(-1px);}
 .nav-hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:38px;height:38px;padding:8px;background:var(--card);border:1px solid var(--border);border-radius:9px;cursor:pointer;z-index:910;}
 .nav-hamburger span{display:block;height:2px;border-radius:2px;background:var(--text2);transition:all .3s;}
 .nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
 .nav-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
 .nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-.nav-drawer{display:none;position:fixed;top:68px;left:0;right:0;bottom:0;background:rgba(1,7,20,.97);backdrop-filter:blur(20px);z-index:899;flex-direction:column;align-items:center;justify-content:center;gap:8px;transform:translateY(-100%);transition:transform .38s cubic-bezier(.4,0,.2,1);}
+.nav-drawer{display:none;position:fixed;top:68px;left:0;right:0;bottom:0;background:rgba(1,7,20,.97);backdrop-filter:blur(20px);z-index:899;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:8px;transform:translateY(-100%);transition:transform .38s cubic-bezier(.4,0,.2,1);padding:18px 16px 28px;border-top:1px solid var(--border);}
 .nav-drawer.open{transform:translateY(0);}
-.nav-drawer a{color:var(--text);font-size:20px;font-weight:600;font-family:'Orbitron',monospace;letter-spacing:3px;padding:14px 40px;border-radius:12px;width:280px;text-align:center;}
+.nav-drawer a{color:var(--text);font-size:15px;font-weight:600;font-family:'Orbitron',monospace;letter-spacing:2px;padding:12px 16px;border-radius:12px;width:100%;text-align:left;}
 .nav-drawer a:hover,.nav-drawer a.act{color:var(--white);background:var(--card);border-color:var(--border2);}
 .nav-drawer .m-cta{margin-top:12px;background:linear-gradient(135deg,var(--accent),#0c49c7);color:#fff!important;border-color:var(--accent)!important;box-shadow:0 0 22px rgba(26,110,245,.4);}
 .hero,.page-hero{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden;padding-inline:clamp(16px,5vw,60px);}
@@ -69,6 +75,11 @@ nav.scrolled{background:rgba(1,7,20,.97);box-shadow:0 4px 30px rgba(0,0,0,.5);}
 .shop-grid{grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));}
 .mem-grid{grid-template-columns:repeat(auto-fill,minmax(min(160px,100%),1fr));}
 .rules-grid{grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));}
+.form-shell{max-width:880px;margin:0 auto;padding:32px;}
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:16px;}
+.form-field label{display:block;margin-bottom:8px;color:var(--white);font-weight:700;}
+.check-row{display:flex;align-items:center;gap:10px;color:var(--text2);font-weight:600;}
+.form-actions{justify-content:flex-start;}
 .fc,.sc,.mc,.rc,.gi,.evc,.lbc{border:1px solid var(--border);transition:all .32s;}
 .fc,.rc,.evc,.lbc,.ann{background:linear-gradient(145deg,rgba(10,26,55,.94),rgba(7,16,38,.98));}
 .fc,.sc,.mc{border-radius:var(--r-lg);}
@@ -77,6 +88,7 @@ nav.scrolled{background:rgba(1,7,20,.97);box-shadow:0 4px 30px rgba(0,0,0,.5);}
 .fc-icon{width:58px;height:58px;border-radius:15px;margin-bottom:20px;display:flex;align-items:center;justify-content:center;background:rgba(26,110,245,.1);border:1px solid rgba(61,142,255,.25);font-size:26px;}
 .fc-name,.sc-name,.mc-name,.ev-name,.lb-name,.rc-title,.ann-title{font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--white);}
 .fc-name{font-size:19px;margin-bottom:10px;}
+.fc-name,.mc-name,.ev-name,.lb-name,.rc-title,.ann-title,.gi-name{overflow-wrap:anywhere;}
 .fc-desc,.rc-desc,.ev-desc,.ann-text{font-size:13.5px;color:var(--text2);line-height:1.72;}
 .fc-arr{position:absolute;bottom:24px;right:24px;font-size:18px;color:var(--border2);}
 .ann-list,.ev-list,.lb-list{display:flex;flex-direction:column;gap:14px;}
@@ -110,7 +122,7 @@ nav.scrolled{background:rgba(1,7,20,.97);box-shadow:0 4px 30px rgba(0,0,0,.5);}
 .bv{background:rgba(168,85,247,.15);color:#c084fc;border:1px solid rgba(168,85,247,.35);}
 .sc-body{padding:16px 16px 18px;}
 .sc-name{font-size:16px;margin-bottom:8px;}
-.sc-pr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.sc-pr{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;gap:10px;flex-wrap:wrap;}
 .sc-pv,.lb-pts,.ev-day{font-family:'Orbitron',monospace;font-weight:700;}
 .sc-pv{font-size:15px;color:var(--gold);}
 .sc-stars{font-size:11px;color:var(--gold2);}
@@ -179,29 +191,14 @@ footer{position:relative;z-index:1;background:linear-gradient(to bottom,var(--bg
 .fbot{max-width:1220px;margin:0 auto;border-top:1px solid var(--border);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
 .fbot-c,.fbot-h{font-size:12px;color:var(--text3);}
 .fbot-h span{color:var(--pink);}
-@media(max-width:900px){.nav-links{display:none;}.nav-hamburger{display:flex;}.nav-drawer{display:flex;}.gal-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:160px;}.gi.s2{grid-column:span 1;}.fi{grid-template-columns:1fr 1fr;}}
-@media(max-width:640px){nav{padding:0 16px;height:62px;}.nav-logo-mark{height:40px;max-width:min(180px,52vw);}.hero-stats{gap:16px;flex-wrap:wrap;width:100%;max-width:420px;}.h-stat{flex:0 0 calc(50% - 8px);}.h-stat-n{font-size:clamp(24px,8vw,34px);}.h-stat-l{letter-spacing:2.2px;margin-top:10px;}.h-div{display:none;}.gal-grid{grid-template-columns:1fr 1fr;grid-auto-rows:130px;}.gi.tall{grid-row:span 1;}.shop-grid{grid-template-columns:repeat(2,1fr);gap:12px;}.mem-grid{grid-template-columns:repeat(3,1fr);}.evc{flex-wrap:wrap;gap:12px;}.lb-bar-w{display:none;}.fi{grid-template-columns:1fr;}.ftag{max-width:100%;}}
-@media(max-width:420px){.shop-grid{grid-template-columns:1fr;}.mem-grid{grid-template-columns:repeat(2,1fr);}.gal-grid{grid-template-columns:1fr;}.hero-btns,.page-actions{flex-direction:column;align-items:center;}.hero-btns .btn,.page-actions .btn{width:100%;max-width:280px;justify-content:center;}.mbtns{flex-direction:column;}}
+@media(max-width:900px){nav{padding:0 18px;}.nav-links,.nav-auth{display:none;position:static;transform:none;}.nav-hamburger{display:flex;}.nav-drawer{display:flex;}.page-hero{min-height:44svh;padding-block:112px 52px;}.sw{padding:48px 18px 72px;}.gal-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:160px;}.gi.s2{grid-column:span 1;}.fc{padding:26px 22px 52px;}.fc-arr{bottom:18px;right:18px;}.fi{grid-template-columns:1fr 1fr;}.form-shell{padding:28px 24px;}}
+@media(max-width:640px){nav{padding:0 14px;height:62px;}.nav-logo-mark{height:40px;max-width:min(180px,52vw);}.nav-drawer{top:62px;padding:16px 14px 24px;justify-content:flex-start;overflow-y:auto;align-items:stretch;}.nav-drawer a{font-size:13px;letter-spacing:1.4px;padding:11px 14px;}.hero{min-height:auto;padding-block:92px 40px;}.page-hero{min-height:auto;padding-block:82px 24px;}.hero-badge,.page-kicker{padding:7px 16px;font-size:9px;letter-spacing:1.8px;margin-bottom:20px;max-width:100%;text-align:center;line-height:1.5;flex-wrap:wrap;justify-content:center;}.hero-title{font-size:clamp(28px,11vw,48px);line-height:1.02;letter-spacing:1px;}.hero-title .ol{-webkit-text-stroke:1.2px var(--accent2);}.page-title{font-size:clamp(22px,7vw,32px);line-height:1.08;overflow-wrap:anywhere;}.hero-sub,.page-copy{font-size:12.5px;line-height:1.62;margin:12px auto 22px;max-width:94%;}.hero-btns,.page-actions{gap:10px;}.btn{padding:12px 18px;font-size:11px;letter-spacing:1px;}.hero-stats{gap:12px;flex-wrap:wrap;width:100%;max-width:none;margin-top:34px;padding:0;}.h-stat{flex:0 0 calc(50% - 6px);padding:0 4px;}.h-stat-n{font-size:clamp(22px,7vw,30px);}.h-stat-l{font-size:10px;letter-spacing:1.8px;margin-top:8px;}.h-div{display:none;}.sw{padding:32px 16px 52px;}.sh{margin-bottom:28px;}.stag{font-size:9px;letter-spacing:2px;}.stitle{font-size:clamp(18px,7vw,26px);letter-spacing:.8px;}.sdesc{font-size:13px;max-width:100%;}.gal-grid{grid-template-columns:1fr 1fr;grid-auto-rows:130px;}.gi.tall{grid-row:span 1;}.shop-grid{grid-template-columns:1fr;gap:14px;}.mem-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}.fc{padding:22px 18px 48px;}.fc-icon{width:48px;height:48px;font-size:22px;margin-bottom:16px;}.fc-name{font-size:17px;}.fc-desc,.rc-desc,.ev-desc,.ann-text,.mc-meta{font-size:13px;}.mc{padding:22px 14px 18px;}.mc-avw{width:58px;height:58px;}.mc-av,.mc-av-img{width:58px;height:58px;}.evc{flex-wrap:wrap;align-items:flex-start;gap:12px;padding:18px 16px;}.ev-date{min-width:52px;padding:8px 10px;}.ev-day{font-size:20px;}.evb{width:100%;text-align:center;justify-content:center;}.lb-bar-w{display:none;}.lbc{flex-wrap:wrap;align-items:center;gap:12px;padding:14px 16px;}.lb-rank{min-width:30px;font-size:18px;}.lb-av{font-size:24px;}.lb-inf{flex:1 1 calc(100% - 58px);}.lb-pts{width:100%;text-align:left;padding-left:46px;}.form-shell{padding:22px 18px;}.form-grid{grid-template-columns:1fr;gap:14px;}.check-row{align-items:flex-start;}.check-row input{margin-top:3px;}.form-actions{justify-content:stretch;}.form-actions .btn{width:100%;justify-content:center;}.fi{grid-template-columns:1fr;gap:24px;}.ftag{max-width:100%;}.toast{left:16px;right:16px;bottom:16px;max-width:none;transform:translateY(calc(100% + 20px));}.toast.show{transform:translateY(0);}}
+@media(max-width:420px){.feat-grid,.shop-grid,.mem-grid,.gal-grid{grid-template-columns:repeat(2,minmax(0,1fr));}.feat-grid{gap:12px;}.fc{padding:18px 14px 42px;border-radius:16px;}.fc-icon{width:42px;height:42px;font-size:18px;margin-bottom:12px;border-radius:12px;}.fc-name{font-size:15px;margin-bottom:8px;}.fc-desc{font-size:12px;line-height:1.6;}.fc-arr{bottom:14px;right:14px;font-size:14px;}.hero-btns,.page-actions,.form-actions{flex-direction:column;align-items:center;}.hero-btns .btn,.page-actions .btn,.form-actions .btn{width:100%;max-width:none;justify-content:center;}.mbtns{flex-direction:column;}.lb-pts{padding-left:0;}}
 </style>
 </head>
 <body>
 <canvas id="starCanvas"></canvas>
 <div class="toast" id="toast"><span id="tIcon">✅</span><span id="tMsg">Ok!</span></div>
-
-<div class="mbg" id="mJoin">
-  <div class="mbox">
-    <button class="mcl" onclick="cm('mJoin')">✕</button>
-    <div class="mt">🎮 Join LYVA</div>
-    <div class="ms">Masukkan data kamu untuk bergabung dengan komunitas Roblox terbaik Indonesia!</div>
-    <input type="text" class="mi" id="jUser" placeholder="Username Roblox kamu...">
-    <input type="text" class="mi" id="jDisc" placeholder="Discord tag (opsional)">
-    <label class="mck"><input type="checkbox" id="jAgree"> Saya setuju dengan peraturan LYVA Community</label>
-    <div class="mbtns">
-      <button class="btn btn-p" onclick="submitJoin()">🚀 Join Sekarang!</button>
-      <button class="btn btn-g" onclick="cm('mJoin')">Batal</button>
-    </div>
-  </div>
-</div>
 
 <nav id="nav">
   <div class="nav-logo">
@@ -214,8 +211,18 @@ footer{position:relative;z-index:1;background:linear-gradient(to bottom,var(--bg
     <li><a href="{{ route('members') }}" class="{{ request()->routeIs('members') ? 'act' : '' }}">👥 Members</a></li>
     <li><a href="{{ route('events') }}" class="{{ request()->routeIs('events') ? 'act' : '' }}">🎉 Events</a></li>
     <li><a href="{{ route('leaderboard') }}" class="{{ request()->routeIs('leaderboard') ? 'act' : '' }}">🏆 Rank</a></li>
-    <li><a href="#" class="nav-cta" onclick="om('mJoin');return false">✨ Join</a></li>
   </ul>
+  <div class="nav-auth">
+    @if($discordAuthUser)
+      <span class="nav-auth-name">{{ \Illuminate\Support\Str::limit($discordAuthUser['name'], 18) }}</span>
+      <a href="{{ ($discordAuthUser['is_core_member'] ?? false) ? route('dashboard') : route('home') }}" class="nav-auth-link {{ request()->routeIs('dashboard*') ? 'act' : '' }}">
+        {{ ($discordAuthUser['is_core_member'] ?? false) ? '🧭 Dashboard' : '🏠 Home' }}
+      </a>
+      <a href="{{ route('auth.discord.logout') }}" class="nav-cta">Logout</a>
+    @else
+      <a href="{{ route('auth.discord.redirect') }}" class="nav-cta">Login</a>
+    @endif
+  </div>
   <button class="nav-hamburger" id="hbg" onclick="toggleMenu()"><span></span><span></span><span></span></button>
 </nav>
 <nav class="nav-drawer" id="nDrawer">
@@ -225,7 +232,14 @@ footer{position:relative;z-index:1;background:linear-gradient(to bottom,var(--bg
   <a href="{{ route('members') }}" class="{{ request()->routeIs('members') ? 'act' : '' }}" onclick="closeMenu()">👥 Members</a>
   <a href="{{ route('events') }}" class="{{ request()->routeIs('events') ? 'act' : '' }}" onclick="closeMenu()">🎉 Events</a>
   <a href="{{ route('leaderboard') }}" class="{{ request()->routeIs('leaderboard') ? 'act' : '' }}" onclick="closeMenu()">🏆 Ranking</a>
-  <a href="#" class="m-cta" onclick="om('mJoin');closeMenu();return false">✨ Join LYVA</a>
+  @if($discordAuthUser && ($discordAuthUser['is_core_member'] ?? false))
+    <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard*') ? 'act' : '' }}" onclick="closeMenu()">🧭 Dashboard</a>
+  @endif
+  @if($discordAuthUser)
+    <a href="{{ route('auth.discord.logout') }}" class="m-cta" onclick="closeMenu()">🔓 Logout</a>
+  @else
+    <a href="{{ route('auth.discord.redirect') }}" class="m-cta" onclick="closeMenu()">🔐 Login Discord</a>
+  @endif
 </nav>
 
 @yield('content')
@@ -234,9 +248,9 @@ footer{position:relative;z-index:1;background:linear-gradient(to bottom,var(--bg
 
 <footer>
   <div class="fi">
-    <div><div class="flr"><div class="fli">🎮</div><div class="fln">LYVA</div></div><div class="ftag">Komunitas Roblox terbaik dan paling aktif di Indonesia. Bergabunglah dan rasakan gaming yang luar biasa!</div><div class="fsoc"><div class="fsb">💬</div><div class="fsb">📺</div><div class="fsb">🎵</div><div class="fsb">📸</div><div class="fsb">🐦</div></div></div>
+    <div><div class="flr"><div class="fli">🎮</div><div class="fln">LYVA</div></div><div class="ftag">Komunitas Roblox Indonesia yang berfokus pada kolaborasi, aktivitas komunitas, dan pengalaman bermain yang lebih terorganisir.</div><div class="fsoc"><div class="fsb">💬</div><div class="fsb">📺</div><div class="fsb">🎵</div><div class="fsb">📸</div><div class="fsb">🐦</div></div></div>
     <div><div class="fch">Navigasi</div><ul class="flinks"><li><a href="{{ route('home') }}">Home</a></li><li><a href="{{ route('gallery') }}">Gallery</a></li><li><a href="{{ route('shop') }}">Shop</a></li><li><a href="{{ route('events') }}">Events</a></li><li><a href="{{ route('leaderboard') }}">Ranking</a></li></ul></div>
-    <div><div class="fch">Komunitas</div><ul class="flinks"><li><a href="{{ route('members') }}">Members</a></li><li><a href="{{ route('events') }}">Turnamen</a></li><li><a href="{{ route('gallery') }}">Screenshots</a></li><li><a href="#" onclick="om('mJoin');return false;">Gabung</a></li></ul></div>
+    <div><div class="fch">Komunitas</div><ul class="flinks"><li><a href="{{ route('members') }}">Tim Inti</a></li><li><a href="{{ route('events') }}">Agenda Event</a></li><li><a href="{{ route('gallery') }}">Dokumentasi</a></li><li><a href="{{ $discordAuthUser ? route('auth.discord.logout') : route('auth.discord.redirect') }}">{{ $discordAuthUser ? 'Keluar' : 'Login Discord' }}</a></li></ul></div>
     <div><div class="fch">Discord</div><ul class="flinks"><li><a href="{{ $discordCommunity['invite_url'] ?? '#' }}" target="_blank" rel="noreferrer">Join Server</a></li><li><a href="{{ route('gallery') }}">Gallery Discord</a></li><li><a href="{{ route('leaderboard') }}">Top Players</a></li></ul></div>
   </div>
   <div class="fbot"><div class="fbot-c">© 2026 LYVA Community. All Rights Reserved.</div><div class="fbot-h">Made with <span>♥</span> for Roblox Indonesia</div></div>
@@ -253,12 +267,11 @@ function frm(){cx.clearRect(0,0,cv.width,cv.height);ST.forEach(s=>{s.a+=s.da*s.d
 window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',window.scrollY>60));
 function toggleMenu(){document.getElementById('hbg').classList.toggle('open');document.getElementById('nDrawer').classList.toggle('open');}
 function closeMenu(){document.getElementById('hbg').classList.remove('open');document.getElementById('nDrawer').classList.remove('open');}
-function om(id){document.getElementById(id).classList.add('open');}
-function cm(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.mbg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
 let tt;function toast(msg){clearTimeout(tt);document.getElementById('tMsg').textContent=msg;const t=document.getElementById('toast');t.classList.add('show');tt=setTimeout(()=>t.classList.remove('show'),3400);}
 function addCart(name){toast('🛒 '+name+' ditambahkan ke keranjang!');}
-function submitJoin(){const u=document.getElementById('jUser').value.trim();const ok=document.getElementById('jAgree').checked;if(!u){toast('⚠️ Masukkan username Roblox dulu!');return;}if(!ok){toast('⚠️ Setujui peraturan komunitas dulu!');return;}cm('mJoin');toast('🎉 Selamat datang di LYVA, '+u+'!');document.getElementById('jUser').value='';document.getElementById('jAgree').checked=false;}
 </script>
+@if (session('toast'))
+<script>window.addEventListener('load',()=>toast(@json(session('toast'))));</script>
+@endif
 </body>
 </html>

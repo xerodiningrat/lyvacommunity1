@@ -2,13 +2,14 @@
 
 use App\Models\CommunityEvent;
 use App\Models\ShopItem;
+use App\Services\DiscordAuthService;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
 test('dashboard shop item form can be opened', function () {
     fakeDiscordStatsForDashboardForms();
 
-    $this->get(route('dashboard.shop-items.create'))
+    $this->withSession(coreDiscordSession())->get(route('dashboard.shop-items.create'))
         ->assertOk()
         ->assertSeeText('Tambah Item Shop');
 });
@@ -18,13 +19,13 @@ test('dashboard community event form can be opened', function () {
 
     $communityEvent = CommunityEvent::factory()->create();
 
-    $this->get(route('dashboard.community-events.edit', $communityEvent))
+    $this->withSession(coreDiscordSession())->get(route('dashboard.community-events.edit', $communityEvent))
         ->assertOk()
         ->assertSeeText('Edit Event');
 });
 
 test('dashboard shop items can be created', function () {
-    $response = $this->post(route('dashboard.shop-items.store'), [
+    $response = $this->withSession(coreDiscordSession())->post(route('dashboard.shop-items.store'), [
         'name' => 'Sky Hammer',
         'slug' => 'sky-hammer',
         'emoji' => '🔨',
@@ -55,7 +56,7 @@ test('dashboard shop items can be updated', function () {
         'badge_class' => 'bh',
     ]);
 
-    $response = $this->put(route('dashboard.shop-items.update', $shopItem), [
+    $response = $this->withSession(coreDiscordSession())->put(route('dashboard.shop-items.update', $shopItem), [
         'name' => 'Nova Blade',
         'slug' => 'nova-blade',
         'emoji' => '🗡️',
@@ -82,7 +83,7 @@ test('dashboard shop items can be updated', function () {
 test('dashboard shop items can be deleted', function () {
     $shopItem = ShopItem::factory()->create();
 
-    $response = $this->delete(route('dashboard.shop-items.destroy', $shopItem));
+    $response = $this->withSession(coreDiscordSession())->delete(route('dashboard.shop-items.destroy', $shopItem));
 
     $response->assertRedirect(route('dashboard', ['page' => 'shop']));
 
@@ -92,7 +93,7 @@ test('dashboard shop items can be deleted', function () {
 });
 
 test('dashboard community events can be created', function () {
-    $response = $this->post(route('dashboard.community-events.store'), [
+    $response = $this->withSession(coreDiscordSession())->post(route('dashboard.community-events.store'), [
         'name' => 'Arena Clash',
         'slug' => 'arena-clash',
         'icon' => '⚔️',
@@ -121,7 +122,7 @@ test('dashboard community events can be updated', function () {
         'status_class' => 'evs',
     ]);
 
-    $response = $this->put(route('dashboard.community-events.update', $communityEvent), [
+    $response = $this->withSession(coreDiscordSession())->put(route('dashboard.community-events.update', $communityEvent), [
         'name' => 'Updated Event',
         'slug' => 'updated-event',
         'icon' => '🎯',
@@ -145,7 +146,7 @@ test('dashboard community events can be updated', function () {
 test('dashboard community events can be deleted', function () {
     $communityEvent = CommunityEvent::factory()->create();
 
-    $response = $this->delete(route('dashboard.community-events.destroy', $communityEvent));
+    $response = $this->withSession(coreDiscordSession())->delete(route('dashboard.community-events.destroy', $communityEvent));
 
     $response->assertRedirect(route('dashboard', ['page' => 'events']));
 
@@ -168,4 +169,19 @@ function fakeDiscordStatsForDashboardForms(): void
             ],
         ]),
     ]);
+}
+
+function coreDiscordSession(): array
+{
+    return [
+        DiscordAuthService::SESSION_KEY => [
+            'id' => 'core-user',
+            'name' => 'Core User',
+            'username' => 'core-user',
+            'avatar_url' => null,
+            'is_core_member' => true,
+            'primary_role' => 'Founder',
+            'redirect_to' => route('dashboard'),
+        ],
+    ];
 }

@@ -37,6 +37,9 @@ return [
 
     'discord' => [
         'invite_url' => env('DISCORD_INVITE_URL', 'https://discord.gg/7grEUp6m'),
+        'client_id' => env('DISCORD_CLIENT_ID'),
+        'client_secret' => env('DISCORD_CLIENT_SECRET'),
+        'redirect_uri' => env('DISCORD_REDIRECT_URI'),
         'bot_token' => env('DISCORD_BOT_TOKEN'),
         'gallery_channel_id' => env('DISCORD_GALLERY_CHANNEL_ID'),
         'gallery_limit' => (int) env('DISCORD_GALLERY_LIMIT', 5),
