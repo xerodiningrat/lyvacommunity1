@@ -116,11 +116,10 @@ input,textarea{font-family:inherit;}
 .ch-title{flex:1;min-width:0;}
 .ch-t{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;color:var(--white);letter-spacing:.5px;display:flex;align-items:center;gap:8px;}
 .ch-lbd{font-size:10px;font-weight:800;padding:2px 8px;border-radius:50px;background:var(--red);color:#fff;letter-spacing:1px;animation:bLive 1.5s infinite;}
-.ch-s{font-size:11.5px;color:var(--text3);margin-top:2px;}
-.ch-acts{display:flex;gap:6px;align-items:center;}
+.ch-s{font-size:11.5px;color:var(--text3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ch-acts{display:flex;gap:6px;align-items:center;flex-shrink:0;}
 .ch-btn{width:38px;height:38px;border-radius:9px;background:var(--card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--text2);transition:all .22s;}
 .ch-btn:hover{background:var(--card2);border-color:var(--border2);color:var(--white);}
-.ch-install{width:auto;padding:0 12px;gap:6px;font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--accent3);}
 
 /* MESSAGES AREA */
 .msgs{
@@ -363,10 +362,12 @@ input,textarea{font-family:inherit;}
 }
 @media(max-width:480px){
   .sb{width:86vw;}
-  .ch-head{gap:10px;padding:0 14px;}
-  .ch-icon{width:38px;height:38px;font-size:18px;}
-  .ch-t{font-size:16px;}
-  .ch-btn{width:34px;height:34px;}
+  .ch-head{gap:9px;padding:0 12px;height:60px;}
+  .ch-icon{width:36px;height:36px;font-size:17px;border-radius:11px;}
+  .ch-t{font-size:15px;gap:6px;}
+  .ch-s{font-size:10.5px;}
+  .ch-acts{gap:4px;}
+  .ch-btn{width:32px;height:32px;font-size:14px;border-radius:8px;}
   .msg-av{width:34px;height:34px;font-size:15px;}
   .msg-bubble{font-size:13.5px;padding:8px 12px;}
   .msgs{padding:16px 12px;}
@@ -480,7 +481,6 @@ input,textarea{font-family:inherit;}
         <div class="ch-s" id="chSub">💬 Chat umum komunitas • <span id="onlineTxt">1 online</span></div>
       </div>
       <div class="ch-acts">
-        <button class="ch-btn ch-install" type="button" data-install-app hidden>＋ Install</button>
         <button class="ch-btn" onclick="toast('🔍 Search coming soon!')" title="Search">🔍</button>
         <button class="ch-btn" onclick="toast('📌 Pinned messages')" title="Pin">📌</button>
         <button class="ch-btn" onclick="refreshChat()" title="Refresh">🔄</button>
