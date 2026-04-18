@@ -12,6 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
+            'discord.auth' => \App\Http\Middleware\EnsureDiscordAuthenticated::class,
             'discord.core' => \App\Http\Middleware\EnsureDiscordCoreMember::class,
         ]);
     })

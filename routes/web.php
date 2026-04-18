@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\CommunityEvent;
+use App\Http\Controllers\ChatMessageController;
 use App\Models\DiscordGalleryMedia;
 use App\Models\LeaderboardEntry;
 use App\Models\ShopItem;
@@ -16,6 +17,13 @@ Route::view('/', 'welcome')->name('home');
 Route::get('/login', [DiscordAuthController::class, 'redirect'])->name('auth.discord.redirect');
 Route::get('/auth/discord/callback', [DiscordAuthController::class, 'callback'])->name('auth.discord.callback');
 Route::get('/logout', [DiscordAuthController::class, 'logout'])->name('auth.discord.logout');
+Route::middleware('discord.auth')->group(function (): void {
+    Route::get('/chat', [ChatMessageController::class, 'index'])->name('chat');
+    Route::post('/chat', [ChatMessageController::class, 'store'])->name('chat.store');
+    Route::get('/chat/state', [ChatMessageController::class, 'state'])->name('chat.state');
+    Route::post('/chat/messages/{chatMessage}/react', [ChatMessageController::class, 'react'])->name('chat.react');
+    Route::delete('/chat/messages/{chatMessage}', [ChatMessageController::class, 'destroy'])->name('chat.destroy');
+});
 Route::middleware('discord.core')->group(function (): void {
     Route::get('/dashboard', function (
         DiscordCommunityStats $discordCommunityStats,

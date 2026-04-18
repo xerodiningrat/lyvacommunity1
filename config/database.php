@@ -44,6 +44,10 @@ return [
 
                 $database = trim($database);
 
+                if ($database === ':memory:' || str_starts_with($database, 'file:')) {
+                    return $database;
+                }
+
                 if (
                     str_contains($database, DIRECTORY_SEPARATOR)
                     || str_contains($database, '/')

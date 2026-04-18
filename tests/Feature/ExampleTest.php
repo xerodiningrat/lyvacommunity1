@@ -16,8 +16,8 @@ test('the application returns a successful response', function () {
         ->assertSeeText('1,053+')
         ->assertSeeText('Events')
         ->assertSeeText('1')
+        ->assertSeeText('Sorotan Galeri Terbaru')
         ->assertSeeText('Lyva Gallery')
-        ->assertSeeText('Fei')
         ->assertDontSeeText('Games');
 
     $this->assertDatabaseHas('discord_gallery_media', [
