@@ -9,9 +9,9 @@ use App\Services\DiscordAuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -189,39 +189,7 @@ class ChatMessageController extends Controller
 
     protected function ensureSeedMessages(): void
     {
-        if (! Schema::hasTable('chat_messages') || ChatMessage::query()->exists()) {
-            return;
-        }
-
-        $baseTime = now()->subHour();
-        $samples = [
-            ['uid' => 'sys_lyvaking', 'name' => 'LyvaKing', 'avatar' => '👑', 'color' => 'c-gold', 'role' => 'owner', 'text' => 'Halo semua! Selamat datang di LYVA Community Chat! 🎉 Mari bersosialisasi dengan ramah ya. Chat ini terhubung real-time ke semua member!', 'offset' => 0, 'reacts' => ['❤️' => ['u1', 'u2', 'u3'], '🔥' => ['u4']]],
-            ['uid' => 'sys_sakura', 'name' => 'SakuraX', 'avatar' => '🌸', 'color' => 'c-pink', 'role' => 'admin', 'text' => 'Hai! Jangan lupa ikut Event MEGA BATTLE hari ini ya! Hadiah 50.000 Robux menanti! ⚔️', 'offset' => 10, 'reacts' => ['🔥' => ['u1', 'u2']]],
-            ['uid' => 'sys_thunder', 'name' => 'ThunderZ', 'avatar' => '⚡', 'color' => 'c-teal', 'role' => 'pro', 'text' => 'Gas lah! Siapa yang mau tim up buat Mega Battle? Drop @ThunderZ di chat 🚀', 'offset' => 20, 'reacts' => []],
-            ['uid' => 'sys_dragon', 'name' => 'DragonLord', 'avatar' => '🐉', 'color' => 'c-gold', 'role' => null, 'text' => '@ThunderZ aku gabung! Dah lama gak main bareng nih 🎮', 'offset' => 30, 'reacts' => [], 'reply_name' => 'ThunderZ', 'reply_text' => 'Gas lah! Siapa yang mau tim up buat Mega Battle?'],
-            ['uid' => 'sys_moon', 'name' => 'MoonGirl', 'avatar' => '🌙', 'color' => 'c-purple', 'role' => 'admin', 'text' => 'Reminder: Shop ada item baru! Cek Dragon Wings dan UFO Ride 🛸✨', 'offset' => 40, 'reacts' => []],
-            ['uid' => 'sys_fox', 'name' => 'FoxByte', 'avatar' => '🦊', 'color' => 'c-orange', 'role' => 'mod', 'text' => 'Selamat ya buat @ThunderZ yg udah level 98! 🏆', 'offset' => 50, 'reacts' => ['🎉' => ['u1', 'u2', 'u3', 'u4', 'u5']]],
-            ['uid' => 'sys_pink', 'name' => 'PinkStar', 'avatar' => '🌺', 'color' => 'c-pink', 'role' => null, 'text' => '🔥🔥🔥', 'offset' => 57, 'reacts' => []],
-        ];
-
-        foreach ($samples as $sample) {
-            ChatMessage::query()->create([
-                'message_type' => 'message',
-                'discord_user_id' => $sample['uid'],
-                'display_name' => $sample['name'],
-                'username' => Str::slug($sample['name'], '_'),
-                'avatar_url' => null,
-                'avatar_emoji' => $sample['avatar'],
-                'color_class' => $sample['color'],
-                'role_key' => $sample['role'],
-                'message' => $sample['text'],
-                'reactions' => $sample['reacts'],
-                'reply_name' => $sample['reply_name'] ?? null,
-                'reply_text' => $sample['reply_text'] ?? null,
-                'created_at' => $baseTime->copy()->addMinutes($sample['offset']),
-                'updated_at' => $baseTime->copy()->addMinutes($sample['offset']),
-            ]);
-        }
+        // Dummy seed chat has been removed; keep the room empty until real members send messages.
     }
 
     protected function syncPresence(array $discordUser): void
